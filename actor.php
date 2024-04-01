@@ -17,42 +17,25 @@ if ($login === 1) {
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $last_name = $_POST['last_name'];
     $family_name = $_POST['family_name'];
-    $last_name_kana = $_POST['last_name_kana'];
-    $family_name_kana = $_POST['family_name_kana'];
+    $last_name = $_POST['last_name'];
     $mail = $_POST['mail'];
     $password = $_POST['password'];
     $gender = $_POST['gender'];
-    $postal_code = $_POST['postal_code'];
-    $prefecture = $_POST['prefecture'];
-    $address_1 = $_POST['address_1'];
-    $address_2 = $_POST['address_2'];
+    $grade = $_POST['grade'];
     $authority = $_POST['authority'];
 
     // 入力チェック
-    if (empty($last_name)) {
-      $errors['last_name'] = '名前（姓）が未入力です。';
-    } elseif (mb_strlen($last_name, 'UTF-8') > 10 || !preg_match('/^[ぁ-んァ-ン一-龠]+$/u', $last_name)) {
-      $errors['last_name'] = '名前（姓）はひらがな、漢字のみ入力可能で、最大10文字です。';
-    }
-
     if (empty($family_name)) {
       $errors['family_name'] = '名前（名）が未入力です。';
     } elseif (mb_strlen($family_name, 'UTF-8') > 10 || !preg_match('/^[ぁ-んァ-ン一-龠]+$/u', $family_name)) {
       $errors['family_name'] = '名前（名）はひらがな、漢字のみ入力可能で、最大10文字です。';
     }
 
-    if (empty($last_name_kana)) {
-      $errors['last_name_kana'] = 'カナ（姓）が未入力です。';
-    } elseif (mb_strlen($last_name_kana, 'UTF-8') > 10 || !preg_match('/^[ァ-ヶー]+$/u', $last_name_kana)) {
-      $errors['last_name_kana'] = 'カナ（姓）はカタカナのみ入力可能で、最大10文字です。';
-    }
-
-    if (empty($family_name_kana)) {
-      $errors['family_name_kana'] = 'カナ（名）が未入力です。';
-    } elseif (mb_strlen($family_name_kana, 'UTF-8') > 10 || !preg_match('/^[ァ-ヶー]+$/u', $family_name_kana)) {
-      $errors['family_name_kana'] = 'カナ（名）はカタカナのみ入力可能で、最大10文字です。';
+    if (empty($last_name)) {
+      $errors['last_name'] = '名前（姓）が未入力です。';
+    } elseif (mb_strlen($last_name, 'UTF-8') > 10 || !preg_match('/^[ぁ-んァ-ン一-龠]+$/u', $last_name)) {
+      $errors['last_name'] = '名前（姓）はひらがな、漢字のみ入力可能で、最大10文字です。';
     }
 
     if (empty($mail)) {
@@ -63,100 +46,51 @@ if ($login === 1) {
       $errors['mail'] = 'メールアドレスの形式が無効です。';
     }
 
-
-    if (empty($password)) {
-      $errors['password'] = 'パスワードが未入力です。';
-    } elseif (!preg_match('/^[a-zA-Z0-9]{1,10}$/', $password)) {
-      $errors['password'] = 'パスワードは半角英数字のみ入力可能で、最大10文字です。';
+    if (empty($grade)) {
+      $errors['grade'] = '学年が未入力です。';
     }
-
-    if (empty($postal_code)) {
-      $errors['postal_code'] = '郵便番号が未入力です。';
-    } elseif (!preg_match('/^\d{7}$/', $postal_code)) {
-      $errors['postal_code'] = '郵便番号は半角数字7桁のみ入力可能です。';
-    }
-
-    if (empty($address_1)) {
-      $errors['address_1'] = '住所（市区町村）が未入力です。';
-    } elseif (mb_strlen($address_1, 'UTF-8') > 10 || !preg_match('/^[ぁ-んァ-ン一-龠0-9 -]+$/u', $address_1)) {
-      $errors['address_1'] = '住所（市区町村）はひらがな、漢字、数字、カタカナ、記号（ハイフンとスペース）のみ入力可能で、最大10文字です。';
-    }
-
-    if (empty($address_2)) {
-      $errors['address_2'] = '住所（番地）が未入力です。';
-    } elseif (mb_strlen($address_2, 'UTF-8') > 100 || !preg_match('/^[ぁ-んァ-ン一-龠0-9 -]+$/u', $address_2)) {
-      $errors['address_2'] = '住所（番地）はひらがな、漢字、数字、カタカナ、記号（ハイフンとスペース）のみ入力可能で、最大100文字です。';
-    } elseif (preg_match('/^0/', $address_2)) {
-      $errors['address_2'] = '住所（番地）は0から始まる値は使用できません。';
-    }
-
 
     if (empty($errors)) {
-      $_SESSION['last_name'] = $last_name;
       $_SESSION['family_name'] = $family_name;
-      $_SESSION['last_name_kana'] = $last_name_kana;
-      $_SESSION['family_name_kana'] = $family_name_kana;
+      $_SESSION['last_name'] = $last_name;
       $_SESSION['mail'] = $mail;
       $_SESSION['password'] = $password;
       $_SESSION['gender'] = $gender;
-      $_SESSION['postal_code'] = $postal_code;
-      $_SESSION['prefecture'] = $prefecture;
-      $_SESSION['address_1'] = $address_1;
-      $_SESSION['address_2'] = $address_2;
+      $_SESSION['grade'] = $grade;
       $_SESSION['authority'] = $authority;
-
-      header('Location: regist_confirm.php');
+      //確認画面に遷移する
+      header('Location: actor_confirm.php');
       exit;
     } else {
-      $_SESSION['last_name'] = $last_name;
       $_SESSION['family_name'] = $family_name;
-      $_SESSION['last_name_kana'] = $last_name_kana;
-      $_SESSION['family_name_kana'] = $family_name_kana;
+      $_SESSION['last_name'] = $last_name;
       $_SESSION['mail'] = $mail;
       $_SESSION['password'] = $password;
       $_SESSION['gender'] = $gender;
-      $_SESSION['postal_code'] = $postal_code;
-      $_SESSION['prefecture'] = $prefecture;
-      $_SESSION['address_1'] = $address_1;
-      $_SESSION['address_2'] = $address_2;
+      $_SESSION['grade'] = $grade;
       $_SESSION['authority'] = $authority;
     }
   }
 } else {
   echo
   "<!doctype HTML>
-        <html lang=\"ja\">
-        <head>
-        <meta charset=\"utf-8\">
-        <title>アカウント登録完了画面</title>
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
-        </head>
-        <body>
+            <html lang=\"ja\">
+            <head>
+            <meta charset=\"utf-8\">
+            <title>イベント一覧</title>
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            </head>
+            <body>
 
-        <header>
-            <img src=\"diblog_logo.jpg\">
-            <ul class=\"menu\">
-                <li>トップ</li>
-                <li>プロフィール</li>
-                <li>D.I.Blogについて</li>
-                <li>登録フォーム</li>
-                <li>問い合わせ</li>
-                <li>その他</li>
-            </ul>
-        </header>
+            <div class='error-message'>このページにアクセスしないでください</div>
 
-        <h1>ログイン画面</h1>
-        
-        
-        <div class='error-message'>権限がありません</div>
- 
 
-        <footer>
-            <p>Copyright D.I.works| D.I.blog is the one which provides A to Z about programming</p>
-        </footer>
+            <footer>
+                <p><small>&copy; 2024 volleyball</p>
+            </footer>
 
-    </body>
-    </html>";
+        </body>
+        </html>";
   exit();
 }
 ?>
@@ -167,28 +101,24 @@ if ($login === 1) {
 
 <head>
   <meta charset="utf-8">
-  <title>アカウント登録画面</title>
+  <title>参加者登録画面</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
   <header>
-    <img src="diblog_logo.jpg">
+    <img src="./images/logo.jpeg" alt="logo-mark">
     <ul class="menu">
-      <li>トップ</li>
-      <li>プロフィール</li>
-      <li>D.I.Blogについて</li>
-      <li>登録フォーム</li>
-      <li>問い合わせ</li>
-      <li>その他</li>
-      <li><a href="regist.php?clear_session=true">アカウント登録</a></li>
-      <li><a href="list.php?clear_session=true">アカウント一覧</a></li>
+    <li><a href="index.php"></a>イベント一覧</li>
+        <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+        <li><a href="event.php?clear_session=true">イベント登録</a></li>
+        <li><a href="list.php?clear_session=true">参加者一覧</a></li>
     </ul>
   </header>
 
   <main>
-    <h1>アカウント登録画面</h1>
-    <form method="post" action="regist.php">
+    <h1>参加者登録画面</h1>
+    <form method="post" action="actor.php">
 
       <div>
         <label>名前(姓)　　</label>
@@ -205,24 +135,6 @@ if ($login === 1) {
 
         <?php if (!empty($errors['last_name'])) : ?>
           <p><?php echo $errors['last_name']; ?></p>
-        <?php endif; ?>
-      </div>
-
-      <div>
-        <label>カナ(姓)　　</label>
-        <input type="text" class="text" size="35" name="family_name_kana" value="<?php echo (!empty($_SESSION['family_name_kana'])) ? $_SESSION['family_name_kana'] : ''; ?>">
-
-        <?php if (!empty($errors['family_name_kana'])) : ?>
-          <p><?php echo $errors['family_name_kana']; ?></p>
-        <?php endif; ?>
-      </div>
-
-      <div>
-        <label>カナ(名)　　</label>
-        <input type="text" class="text" size="35" name="last_name_kana" value="<?php echo (!empty($_SESSION['last_name_kana'])) ? $_SESSION['last_name_kana'] : ''; ?>">
-
-        <?php if (!empty($errors['last_name_kana'])) : ?>
-          <p><?php echo $errors['last_name_kana']; ?></p>
         <?php endif; ?>
       </div>
 
@@ -253,59 +165,20 @@ if ($login === 1) {
       </div>
 
       <div>
-        <label>郵便番号　　</label>
-        <input type="text" class="text" size="10" name="postal_code" value="<?php echo (!empty($_SESSION['postal_code'])) ? $_SESSION['postal_code'] : ''; ?>">
-
-        <?php if (!empty($errors['postal_code'])) : ?>
-          <p><?php echo $errors['postal_code']; ?></p>
-        <?php endif; ?>
-      </div>
-
-      <div>
-        <label>住所(都道府県)　　</label>
-        <select class="text" name="prefecture">
-          <option value="" <?php echo (empty($_SESSION['prefecture']) || $_SESSION['prefecture'] === '') ? 'selected' : ''; ?>> </option>
+        <label>学年(M1は5年・M2は6年を選択)</label>
+        <select class="text" name="grade">
+          <option value="" <?php echo (empty($_SESSION['grade']) || $_SESSION['grade'] === '') ? 'selected' : ''; ?>> </option>
           <?php
-          $prefectures = array(
-            '北海道', '青森県', '岩手県', '宮城県', '秋田県',
-            '山形県', '福島県', '茨城県', '栃木県', '群馬県',
-            '埼玉県', '千葉県', '東京都', '神奈川県', '新潟県',
-            '富山県', '石川県', '福井県', '山梨県', '長野県',
-            '岐阜県', '静岡県', '愛知県', '三重県', '滋賀県',
-            '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県',
-            '鳥取県', '島根県', '岡山県', '広島県', '山口県',
-            '徳島県', '香川県', '愛媛県', '高知県', '福岡県',
-            '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県',
-            '鹿児島県', '沖縄県'
+          $grades = array(
+            '1', '2', '3', '4', '5','6'
           );
-
-          foreach ($prefectures as $prefecture) {
-            echo '<option value="' . $prefecture . '"';
-            echo (!empty($_SESSION['prefecture']) && $_SESSION['prefecture'] === $prefecture) ? ' selected' : '';
-            echo '>' . $prefecture . '</option>';
+          foreach ($grades as $grade) {
+            echo '<option value="' . $grade . '"';
+            echo (!empty($_SESSION['grade']) && $_SESSION['grade'] === $grade) ? ' selected' : '';
+            echo '>' . $grade ."年".'</option>';
           }
           ?>
         </select>
-      </div>
-
-
-
-      <div>
-        <label>住所(市区町村)　　</label>
-        <input type="text" class="text" size="35" name="address_1" value="<?php echo (!empty($_SESSION['address_1'])) ? $_SESSION['address_1'] : ''; ?>">
-
-        <?php if (!empty($errors['address_1'])) : ?>
-          <p><?php echo $errors['address_1']; ?></p>
-        <?php endif; ?>
-      </div>
-
-      <div>
-        <label>住所(番地)　　</label>
-        <input type="text" class="text" size="35" name="address_2" value="<?php echo (!empty($_SESSION['address_2'])) ? $_SESSION['address_2'] : ''; ?>">
-
-        <?php if (!empty($errors['address_2'])) : ?>
-          <p><?php echo $errors['address_2']; ?></p>
-        <?php endif; ?>
       </div>
 
       <div>
@@ -326,7 +199,7 @@ if ($login === 1) {
   </main>
 
   <footer>
-    <p>Copyright D.I.works| D.I.blog is the one which provides A to Z about programming</p>
+    <p><small>&copy; 2024 volleyball</p>
   </footer>
 
 </body>

@@ -1,7 +1,6 @@
 <?php
 session_start();
 //SESSIONを各名前の変数に格納する
-$id = isset($_SESSION['id']) ? $_SESSION['id'] : '';
 $event_name = isset($_SESSION['event_name']) ? $_SESSION['event_name'] : '';
 $address = isset($_SESSION['address']) ? $_SESSION['address'] : '';
 $month = isset($_SESSION['month']) ? $_SESSION['month'] : '';
@@ -16,46 +15,39 @@ try {
   // 接続エラーが発生した場合の処理
   echo
   "<!doctype HTML>
-              <html lang=\"ja\">
-              <head>
-              <meta charset=\"utf-8\">
-              <title>イベント登録完了画面</title>
-              <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
-              </head>
-              <body>
-  
-              <header>
-                  <img src=\"./images/logo.jpeg\">
-                  <ul class=\"menu\">
-                      <li><a href=\"index.php\">イベント一覧</a></li>
-                  </ul>
-              </header>
-  
-              <h1>イベント登録完了画面</h1>
-  
-  
-              <div class='error-message'>エラーが発生したためイベント登録できませんでした</div>
-  
-  
-              <footer>
-                  <p><small>&copy; 2024 volleyball</p>
-              </footer>
-  
-          </body>
-          </html>";
+            <html lang=\"ja\">
+            <head>
+            <meta charset=\"utf-8\">
+            <title>イベント登録完了画面</title>
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            </head>
+            <body>
+
+            <header>
+                <img src=\"./images/logo.jpeg\">
+                <ul class=\"menu\">
+                    <li><a href=\"index.php\">イベント一覧</a></li>
+                </ul>
+            </header>
+
+            <h1>イベント登録完了画面</h1>
+
+
+            <div class='error-message'>エラーが発生したためイベント登録できませんでした</div>
+
+
+            <footer>
+                <p><small>&copy; 2024 volleyball</p>
+            </footer>
+
+        </body>
+        </html>";
   exit();
 }
 
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-$result = $pdo->exec("UPDATE events SET 
-    event_name = '$event_name',
-    address = '$address',
-    month = '$month',
-    date = '$date',
-  WHERE id = $id");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+$result =
+  $pdo->exec("insert into events(event_name, address, month, date, number, delete_flag)
+      values('$event_name', '$address', '$month', '$date', '0', '0')");
 ?>
 
 <!doctype HTML>
@@ -63,7 +55,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 <head>
   <meta charset="utf-8">
-  <title>イベント更新完了画面</title>
+  <title>イベント登録完了画面</title>
   <link rel="stylesheet" type="text/css" href="style2.css">
 </head>
 
@@ -80,7 +72,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   </header>
 
 
-  <h1>イベント更新完了画面</h1>
+  <h1>イベント登録完了画面</h1>
 
   <?php
   if ($result !== false || $pdo !== false) {
@@ -89,7 +81,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   ?>
 
     <div class="complete">
-      <h2>更新完了しました</h2>
+      <h2>登録完了しました</h2>
       <form action="index.php" method="post">
         <input type="submit" class="button2" value="TOPページに戻る">
     </div>

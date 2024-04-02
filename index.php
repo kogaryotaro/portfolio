@@ -145,7 +145,8 @@ if(isset($_POST['submit'])){
               </form>
             }</td>";
             if ($login = 1) {  //幹事が操作できる
-              echo "<td><a href='event_delete.php?id={$row['event_id']}'>削除</a></td>";
+              echo "<td><a href='event_delete.php?id={$row['event_id']}?clear_session=true'>削除</a></td>";
+              echo "<td><a href='event_update.php?id={$row['event_id']}?clear_session=true'>更新</a></td>";
             }
             echo "</tr>";
           }

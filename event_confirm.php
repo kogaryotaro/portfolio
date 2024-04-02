@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-$id = isset($_SESSION['id']) ? $_SESSION['id'] : '';
 //SESSIONを各名前の変数に格納する
 $event_name = isset($_SESSION['event_name']) ? $_SESSION['event_name'] : '';
 $address = isset($_SESSION['address']) ? $_SESSION['address'] : '';
@@ -14,7 +12,7 @@ $date = isset($_SESSION['date']) ? $_SESSION['date'] : '';
 
 <head>
   <meta charset="utf-8">
-  <title>イベント更新確認画面</title>
+  <title>イベント登録確認画面</title>
   <link rel="stylesheet" type="text/css" href="style2.css">
 </head>
 
@@ -30,7 +28,7 @@ $date = isset($_SESSION['date']) ? $_SESSION['date'] : '';
     </ul>
   </header>
 
-  <h1>イベント更新確認画面</h1>
+  <h1>イベント登録確認画面</h1>
 
   <div class="confirm">
     <p>イベント
@@ -45,18 +43,16 @@ $date = isset($_SESSION['date']) ? $_SESSION['date'] : '';
       <?php echo $date . '日'; ?>
     </p>
 
-    <form action="event_update.php">
+    <form action="event.php">
       <input type="submit" class="button1" value="前に戻る">
-      <input type="hidden" value="<?php echo $_SESSION['id']; ?>" name="id">
       <input type="hidden" value="<?php echo $_SESSION['event_name']; ?>" name="event_name">
       <input type="hidden" value="<?php echo $_SESSION['address']; ?>" name="address">
       <input type="hidden" value="<?php echo $_SESSION['month']; ?>" name="month">
       <input type="hidden" value="<?php echo $_SESSION['date']; ?>" name="date">
     </form>
 
-    <form action="event_update_complete.php" method="post">
+    <form action="event_complete.php" method="post">
       <input type="submit" class="button2" value="登録する">
-      <input type="hidden" value="<?php echo $_SESSION['id']; ?>" name="id">
       <input type="hidden" value="<?php echo $_SESSION['event_name']; ?>" name="event_name">
       <input type="hidden" value="<?php echo $_SESSION['address']; ?>" name="address">
       <input type="hidden" value="<?php echo $_SESSION['month']; ?>" name="month">

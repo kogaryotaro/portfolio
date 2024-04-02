@@ -1,49 +1,10 @@
 <?php
 
 mb_internal_encoding("utf8");
-
 session_start();
 
 $login = isset($_SESSION['login']) ? $_SESSION['login'] : '';
 if ($login === 1) {
-
-  try {
-    // ここで接続エラーが発生する可能性がある。
-    $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
-  } catch (PDOException $e) {
-    // 接続エラーが発生した場合の処理
-    echo
-    "<!doctype HTML>
-                <html lang=\"ja\">
-                <head>
-                <meta charset=\"utf-8\">
-                <title>参加者登録完了画面</title>
-                <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
-                </head>
-                <body>
-    
-                <header>
-                    <img src=\"./images/logo.jpeg\">
-                    <ul class=\"menu\">
-                        <li><a href=\"index.php\">イベント登録</a></li>
-                    </ul>
-                </header>
-    
-                <h1>参加者登録完了画面</h1>
-    
-    
-                <div class='error-message'>エラーが発生したため参加者登録できませんでした</div>
-    
-    
-                <footer>
-                    <p><small>&copy; 2024 volleyball</p>
-                </footer>
-    
-            </body>
-            </html>";
-    exit();
-  }
-
 
   // クエリパラメータが設定されているかどうかを確認し、セッションをクリアする
   if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
@@ -53,6 +14,7 @@ if ($login === 1) {
   }
 
   $errors = array();
+
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $event_name = $_POST['event_name'];
@@ -89,7 +51,7 @@ if ($login === 1) {
       $_SESSION['month'] = $month;
       $_SESSION['date'] = $date;
       //確認画面に遷移する
-      header('Location: event_update_confirm.php');
+      header('Location: event_confirm.php');
       exit;
     } else {
       $_SESSION['event_name'] = $event_name;
@@ -98,19 +60,13 @@ if ($login === 1) {
       $_SESSION['date'] = $date;
     }
   }
-
-  if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-  }
-  $stmt = $pdo->query("SELECT * FROM event WHERE event_id = $id");
-  $user = $stmt->fetch();
 } else {
   echo
   "<!doctype HTML>
             <html lang=\"ja\">
             <head>
             <meta charset=\"utf-8\">
-            <title>イベント更新</title>
+            <title>イベント一覧</title>
             <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
             </head>
             <body>
@@ -126,8 +82,6 @@ if ($login === 1) {
         </html>";
   exit();
 }
-
-
 ?>
 
 
@@ -136,7 +90,7 @@ if ($login === 1) {
 
 <head>
   <meta charset="utf-8">
-  <title>イベント更新画面</title>
+  <title>イベント登録画面</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
@@ -152,15 +106,12 @@ if ($login === 1) {
   </header>
 
   <main>
-    <h1>イベント更新画面</h1>
-    <form method="post" action="event_update.php">
-
-      <!-- idをわたす-->
-      <input type="hidden" value="<?php echo $user['id']; ?>" name="id">
+    <h1>イベント登録画面</h1>
+    <form method="post" action="actor.php">
 
       <div>
         <label>イベント　　</label>
-        <input type="text" class="text" size="35" name="event_name" value="<?php echo (!empty($_SESSION['event_name'])) ? $_SESSION['event_name'] : $user['event_name']; ?>">
+        <input type="text" class="text" size="35" name="event_name" value="<?php echo (!empty($_SESSION['event_name'])) ? $_SESSION['event_name'] : ''; ?>">
 
         <?php if (!empty($errors['event_name'])) : ?>
           <p><?php echo $errors['event_name']; ?></p>
@@ -169,7 +120,7 @@ if ($login === 1) {
 
       <div>
         <label>開催地　　</label>
-        <input type="text" class="text" size="35" name="address" value="<?php echo (!empty($_SESSION['address'])) ? $_SESSION['address'] : $user['address']; ?>">
+        <input type="text" class="text" size="35" name="address" value="<?php echo (!empty($_SESSION['address'])) ? $_SESSION['address'] : ''; ?>">
 
         <?php if (!empty($errors['address'])) : ?>
           <p><?php echo $errors['address']; ?></p>
@@ -186,7 +137,7 @@ if ($login === 1) {
           );
           foreach ($months as $month) {
             echo '<option value="' . $month . '"';
-            echo (!empty($_SESSION['month']) && $_SESSION['month'] === $month) ? 'selected' : ($user['month'] === $month ? 'selected' : '');
+            echo (!empty($_SESSION['month']) && $_SESSION['month'] === $month) ? ' selected' : '';
             echo '>' . $month . "月" . '</option>';
           }
           ?>
@@ -204,16 +155,19 @@ if ($login === 1) {
           );
           foreach ($dates as $date) {
             echo '<option value="' . $date . '"';
-            echo (!empty($_SESSION['date']) && $_SESSION['date'] === $date) ? 'selected' : ($user['date'] === $date ? 'selected' : '');
+            echo (!empty($_SESSION['date']) && $_SESSION['date'] === $date) ? ' selected' : '';
             echo '>' . $date . "日" . '</option>';
           }
           ?>
         </select>
       </div>
 
+
       <div>
         <input type="submit" class="submit" value="確認する">
       </div>
+
+
 
     </form>
   </main>

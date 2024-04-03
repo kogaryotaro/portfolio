@@ -1,12 +1,9 @@
 <?php
-
 mb_internal_encoding("utf8");
-
 session_start();
 
 $login = isset($_SESSION['login']) ? $_SESSION['login'] : '';
 if ($login === 1) {
-
   try {
     // ここで接続エラーが発生する可能性がある。
     $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
@@ -43,7 +40,6 @@ if ($login === 1) {
             </html>";
     exit();
   }
-
 
   // クエリパラメータが設定されているかどうかを確認し、セッションをクリアする
   if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
@@ -199,8 +195,7 @@ if ($login === 1) {
           <option value="" <?php echo (empty($_SESSION['date']) || $_SESSION['date'] === '') ? 'selected' : ''; ?>> </option>
           <?php
           $dates = array(
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'
-            ,'16','17','18','19','20','21','22', '23','24','25', '26', '27', '28', '29','30', '31'
+            '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
           );
           foreach ($dates as $date) {
             echo '<option value="' . $date . '"';

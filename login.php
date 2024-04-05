@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     //姓名をprepareで入れる
-    $stmt = $pdo->prepare("SELECT * FROM portfolio WHERE family_name = :family_name and last_name = :last_name");
+    $stmt = $pdo->prepare("SELECT * FROM actor WHERE family_name = :family_name and last_name = :last_name");
     $stmt->execute(array(':family_name' => $family_name, ':last_name' => $last_name));
     $user = $stmt->fetch();
 
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div>
         <label>名前（姓）　　</label>
-        <input type="text" class="text" size="35" name="mail" value="<?php echo (!empty($_POST['family_name'])) ? $_POST['family_name'] : ""; ?>">
+        <input type="text" class="text" size="35" name="family_name" value="<?php echo (!empty($_POST['family_name'])) ? $_POST['family_name'] : ""; ?>">
 
         <?php if (!empty($errors['family_name'])) : ?>
           <p><?php echo $errors['family_name']; ?></p>
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div>
         <label>名前（名）　　</label>
-        <input type="text" class="text" size="35" name="mail" value="<?php echo (!empty($_POST['last_name'])) ? $_POST['last_name'] : ""; ?>">
+        <input type="text" class="text" size="35" name="last_name" value="<?php echo (!empty($_POST['last_name'])) ? $_POST['last_name'] : ""; ?>">
 
         <?php if (!empty($errors['last_name'])) : ?>
           <p><?php echo $errors['last_name']; ?></p>

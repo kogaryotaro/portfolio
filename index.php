@@ -64,7 +64,7 @@ try {
         </html>";
   exit();
 }
-$stmt = $pdo->query("select * from event order by date desc");
+$stmt = $pdo->query("select * from events order by date desc");
 //参加するボタンを押したときnumberカラムが1増える
 if(isset($_POST['submit'])){
   $id = isset($_POST['id']) ? $_POST['id'] : '';

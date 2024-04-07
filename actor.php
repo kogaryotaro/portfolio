@@ -3,6 +3,7 @@
 mb_internal_encoding("utf8");
 session_start();
 
+
 $login = isset($_SESSION['login']) ? $_SESSION['login'] : '';
 if ($login === 1) {
 
@@ -46,6 +47,12 @@ if ($login === 1) {
       $errors['mail'] = 'メールアドレスの形式が無効です。';
     }
 
+    if (empty($password)) {
+      $errors['password'] = 'パスワードが未入力です。';
+    } elseif (!preg_match('/^[a-zA-Z0-9]{1,10}$/', $password)) {
+      $errors['password'] = 'パスワードは半角英数字のみ入力可能で、最大10文字です。';
+    }
+
     if (empty($grade)) {
       $errors['grade'] = '学年が未入力です。';
     }
@@ -60,7 +67,7 @@ if ($login === 1) {
       $_SESSION['authority'] = $authority;
       //確認画面に遷移する
       header('Location: actor_confirm.php');
-      exit;
+      exit();
     } else {
       $_SESSION['family_name'] = $family_name;
       $_SESSION['last_name'] = $last_name;
@@ -93,7 +100,9 @@ if ($login === 1) {
         </html>";
   exit();
 }
+
 ?>
+
 
 
 <!doctype html>
@@ -109,14 +118,15 @@ if ($login === 1) {
   <header>
     <img src="./images/logo.jpeg" alt="logo-mark">
     <ul class="menu">
-    <li><a href="index.php"></a>イベント一覧</li>
-        <li><a href="actor.php?clear_session=true">参加者登録</a></li>
-        <li><a href="event.php?clear_session=true">イベント登録</a></li>
-        <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+      <li><a href="index.php"></a>イベント一覧</li>
+      <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+      <li><a href="event.php?clear_session=true">イベント登録</a></li>
+      <li><a href="list.php?clear_session=true">参加者一覧</a></li>
     </ul>
   </header>
 
   <main>
+
     <h1>参加者登録画面</h1>
     <form method="post" action="actor.php">
 
@@ -165,20 +175,24 @@ if ($login === 1) {
       </div>
 
       <div>
-        <label>学年(M1は5年・M2は6年を選択)</label>
+        <label>学年(M1は5年・M2は6年を選択)　</label>
         <select class="text" name="grade">
           <option value="" <?php echo (empty($_SESSION['grade']) || $_SESSION['grade'] === '') ? 'selected' : ''; ?>> </option>
           <?php
           $grades = array(
-            '1', '2', '3', '4', '5','6'
+            '1', '2', '3', '4', '5', '6'
           );
           foreach ($grades as $grade) {
             echo '<option value="' . $grade . '"';
             echo (!empty($_SESSION['grade']) && $_SESSION['grade'] === $grade) ? ' selected' : '';
-            echo '>' . $grade ."年".'</option>';
+            echo '>' . $grade . "年" . '</option>';
           }
           ?>
         </select>
+
+        <?php if (!empty($errors['grade'])) : ?>
+          <p><?php echo $errors['grade']; ?></p>
+        <?php endif; ?>
       </div>
 
       <div>
@@ -192,8 +206,6 @@ if ($login === 1) {
       <div>
         <input type="submit" class="submit" value="確認する">
       </div>
-
-
 
     </form>
   </main>

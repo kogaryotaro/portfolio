@@ -134,7 +134,7 @@ if(isset($_POST['submit'])){
           <?php
           while ($row = $stmt->fetch()) {
             echo "<tr>";
-            echo "<td>{$row['name']}</td>";
+            echo "<td>{$row['event_name']}</td>";
             echo "<td>{$row['address']}</td>";
             echo "<td>{$row['date']}</td>";
             echo "<td>{$row['number']}</td>";

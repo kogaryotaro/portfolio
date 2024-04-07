@@ -31,15 +31,19 @@ $date = isset($_SESSION['date']) ? $_SESSION['date'] : '';
   <h1>イベント登録確認画面</h1>
 
   <div class="confirm">
-    <p>イベント
+    <p>イベント　
       <?php echo $event_name; ?>
     </p>
 
-    <p>開催日(月)
+    <p>開催地　
+      <?php echo $address; ?>
+    </p>
+
+    <p>開催日(月)　
       <?php echo $month . '月'; ?>
     </p>
 
-    <p>開催日(日)
+    <p>開催日(日)　
       <?php echo $date . '日'; ?>
     </p>
 

@@ -107,7 +107,7 @@ if ($login === 1) {
 
   <main>
     <h1>イベント登録画面</h1>
-    <form method="post" action="actor.php">
+    <form method="post" action="event.php">
 
       <div>
         <label>イベント　　</label>

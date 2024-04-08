@@ -51,6 +51,7 @@ if ($login === 1) {
   $errors = array();
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    $id = $_POST['id'];
     $event_name = $_POST['event_name'];
     $address = $_POST['address'];
     $month = $_POST['month'];
@@ -80,6 +81,7 @@ if ($login === 1) {
     }
 
     if (empty($errors)) {
+      $_SESSION['id'] = $id;
       $_SESSION['event_name'] = $event_name;
       $_SESSION['address'] = $address;
       $_SESSION['month'] = $month;
@@ -98,8 +100,8 @@ if ($login === 1) {
   if (isset($_GET['id'])) {
     $id = $_GET['id'];
   }
-  $stmt = $pdo->query("SELECT * FROM event WHERE event_id = $id");
-  $user = $stmt->fetch();
+  $stmt = $pdo->query("SELECT * FROM events WHERE event_id = $id");
+  $event = $stmt->fetch();
 } else {
   echo
   "<!doctype HTML>
@@ -152,11 +154,11 @@ if ($login === 1) {
     <form method="post" action="event_update.php">
 
       <!-- idをわたす-->
-      <input type="hidden" value="<?php echo $user['id']; ?>" name="id">
+      <input type="hidden" value="<?php echo $event['event_id']; ?>" name="id">
 
       <div>
         <label>イベント　　</label>
-        <input type="text" class="text" size="35" name="event_name" value="<?php echo (!empty($_SESSION['event_name'])) ? $_SESSION['event_name'] : $user['event_name']; ?>">
+        <input type="text" class="text" size="35" name="event_name" value="<?php echo (!empty($_SESSION['event_name'])) ? $_SESSION['event_name'] : $event['event_name']; ?>">
 
         <?php if (!empty($errors['event_name'])) : ?>
           <p><?php echo $errors['event_name']; ?></p>
@@ -165,7 +167,7 @@ if ($login === 1) {
 
       <div>
         <label>開催地　　</label>
-        <input type="text" class="text" size="35" name="address" value="<?php echo (!empty($_SESSION['address'])) ? $_SESSION['address'] : $user['address']; ?>">
+        <input type="text" class="text" size="35" name="address" value="<?php echo (!empty($_SESSION['address'])) ? $_SESSION['address'] : $event['address']; ?>">
 
         <?php if (!empty($errors['address'])) : ?>
           <p><?php echo $errors['address']; ?></p>
@@ -175,31 +177,34 @@ if ($login === 1) {
       <div>
         <label>開催日(月)　</label>
         <select class="text" name="month">
-          <option value="" <?php echo (empty($_SESSION['month']) || $_SESSION['month'] === '') ? 'selected' : ''; ?>> </option>
+          <option value="" > </option>
           <?php
           $months = array(
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'
           );
           foreach ($months as $month) {
             echo '<option value="' . $month . '"';
-            echo (!empty($_SESSION['month']) && $_SESSION['month'] === $month) ? 'selected' : ($user['month'] === $month ? 'selected' : '');
+            echo (!empty($_SESSION['month']) && $_SESSION['month'] === $month) ? 'selected' : (($event['month'] === $month) ? 'selected' : '');
             echo '>' . $month . "月" . '</option>';
           }
           ?>
         </select>
       </div>
 
+      <?php echo $event['date'];?>
+
+
       <div>
         <label>開催日(日)　</label>
         <select class="text" name="date">
-          <option value="" <?php echo (empty($_SESSION['date']) || $_SESSION['date'] === '') ? 'selected' : ''; ?>> </option>
+          <option value="" > </option>
           <?php
           $dates = array(
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
           );
           foreach ($dates as $date) {
             echo '<option value="' . $date . '"';
-            echo (!empty($_SESSION['date']) && $_SESSION['date'] === $date) ? 'selected' : ($user['date'] === $date ? 'selected' : '');
+            echo (!empty($_SESSION['date']) && $_SESSION['date'] === $date) ? 'selected' : (($event['date'] === $date) ? 'selected' : '');
             echo '>' . $date . "日" . '</option>';
           }
           ?>

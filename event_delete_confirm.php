@@ -6,7 +6,7 @@ $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
 
 $id = isset($_POST['id']) ? $_POST['id'] : '';
 
-$stmt = $pdo->query("SELECT * FROM events WHERE id = $id");
+$stmt = $pdo->query("SELECT * FROM events WHERE event_id = $id");
 $event = $stmt->fetch();
 
 ?>
@@ -39,12 +39,12 @@ $event = $stmt->fetch();
 
   <form action="event_delete.php" method="get">
     <input type="submit" class="button1" value="前に戻る">
-    <input type="hidden" value="<?php echo $event['id']; ?>" name="id">
+    <input type="hidden" value="<?php echo $event['event_id']; ?>" name="id">
   </form>
 
   <form action="event_delete_complete.php" method="post">
     <input type="submit" class="button2" value="削除する">
-    <input type="hidden" value="<?php echo $user['id']; ?>" name="id">
+    <input type="hidden" value="<?php echo $event['event_id']; ?>" name="id">
   </form>
 
   </div>

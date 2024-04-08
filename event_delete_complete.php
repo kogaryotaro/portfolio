@@ -42,7 +42,7 @@ try {
 $id = isset($_POST['id']) ? $_POST['id'] : '';
 
 $result =
-  $pdo->exec("update events set delete_flag ='1' where id = $id");
+  $pdo->exec("update events set delete_flag ='1' where event_id = $id");
 
 ?>
 

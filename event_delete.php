@@ -45,7 +45,7 @@ if ($login === 1) {
   // 通常削除リクエストの際はgetメソッドを利用する
   $id = isset($_GET['id']) ? $_GET['id'] : '';
 
-  $stmt = $pdo->query("SELECT * FROM events WHERE id = $id");
+  $stmt = $pdo->query("SELECT * FROM events WHERE event_id = $id");
   $event = $stmt->fetch();
 } else {
   echo
@@ -113,11 +113,11 @@ if ($login === 1) {
 
     <form action="event_delete_confirm.php" method="post">
       <input type="submit" class="button2" value="確認する">
-      <input type="hidden" value="<?php echo $user['id']; ?>" name="id">
-      <input type="hidden" value="<?php echo $user['event_name']; ?>" name="event_name">
-      <input type="hidden" value="<?php echo $user['address']; ?>" name="address">
-      <input type="hidden" value="<?php echo $user['month']; ?>" name="month">
-      <input type="hidden" value="<?php echo $user['date']; ?>" name="date">
+      <input type="hidden" value="<?php echo $event['event_id']; ?>" name="id">
+      <input type="hidden" value="<?php echo $event['event_name']; ?>" name="event_name">
+      <input type="hidden" value="<?php echo $event['address']; ?>" name="address">
+      <input type="hidden" value="<?php echo $event['month']; ?>" name="month">
+      <input type="hidden" value="<?php echo $event['date']; ?>" name="date">
     </form>
 
   </div>

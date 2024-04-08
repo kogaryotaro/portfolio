@@ -127,7 +127,8 @@ if(isset($_POST['submit'])){
           <tr>
             <th>イベント名</th>
             <th>場所</th>
-            <th>時間</th>
+            <th>月</th>
+            <th>日</th>
           </tr>
         </thead>
         <tbody>
@@ -136,6 +137,7 @@ if(isset($_POST['submit'])){
             echo "<tr>";
             echo "<td>{$row['event_name']}</td>";
             echo "<td>{$row['address']}</td>";
+            echo "<td>{$row['month']}</td>";
             echo "<td>{$row['date']}</td>";
             echo "<td>{$row['number']}</td>";
             echo "<td>{
@@ -145,8 +147,8 @@ if(isset($_POST['submit'])){
               </form>
             }</td>";
             if ($login = 1) {  //幹事が操作できる
-              echo "<td><a href='event_delete.php?id={$row['event_id']}?clear_session=true'>削除</a></td>";
-              echo "<td><a href='event_update.php?id={$row['event_id']}?clear_session=true'>更新</a></td>";
+              echo "<td><a href='event_delete.php?id={$row['event_id']}'>削除</a></td>";
+              echo "<td><a href='event_update.php?id={$row['event_id']}'>更新</a></td>";
             }
             echo "</tr>";
           }

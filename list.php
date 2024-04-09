@@ -1,107 +1,119 @@
 <?php
+mb_internal_encoding("utf8");
+session_start();
 
-  mb_internal_encoding("utf8");
+$login = $_SESSION['login'];
 
-  session_start();
-  
-  $login = isset($_SESSION['login']) ? $_SESSION['login'] : '';
-  if($login === 1){
-      
-      // クエリパラメータが設定されているかどうかを確認し、セッションをクリアする
-    if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
-        // セッションをクリアする
-       require_once 'sessionFunction.php';
-       sessionClear();
-    }
-  }else{
-       echo  
-      "<!doctype HTML>
-        <html lang=\"ja\">
-        <head>
-        <meta charset=\"utf-8\">
-        <title>アカウント登録完了画面</title>
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
-        </head>
-        <body>
+//ユーザーじゃない人がアクセスしたとき
+if($login!=1 && $login!=0){
+  echo
+  "<!doctype HTML>
+            <html lang=\"ja\">
+            <head>
+            <meta charset=\"utf-8\">
+            <title>イベント一覧</title>
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            </head>
+            <body>
 
-        <header>
-            <img src=\"diblog_logo.jpg\">
-            <ul class=\"menu\">
-                <li>トップ</li>
-                <li>プロフィール</li>
-                <li>D.I.Blogについて</li>
-                <li>登録フォーム</li>
-                <li>問い合わせ</li>
-                <li>その他</li>
-            </ul>
-        </header>
+            <div class='error-message'>このページにアクセスしないでください</div>
 
-        <h1>ログイン画面</h1>
-        
-        
-        <div class='error-message'>権限がありません</div>
- 
 
-        <footer>
-            <p>Copyright D.I.works| D.I.blog is the one which provides A to Z about programming</p>
-        </footer>
+            <footer>
+                <p><small>&copy; 2024 volleyball</p>
+            </footer>
 
-    </body>
-    </html>";
-    
-  }
+        </body>
+        </html>";
+  exit();
+}
+
+try {
+  // ここで接続エラーが発生する可能性がある。
+  $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
+} catch (PDOException $e) {
+  // 接続エラーが発生した場合の処理
+  echo
+  "<!doctype HTML>
+            <html lang=\"ja\">
+            <head>
+            <meta charset=\"utf-8\">
+            <title>イベント一覧</title>
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            </head>
+            <body>
+
+            <header>
+                <img src=\"./images/logo.jpeg\">
+                <ul class=\"menu\">
+                    <li><a href=\"index.php\">イベント登録</a></li>
+                </ul>
+            </header>
+
+            <h1>イベント一覧</h1>
+
+
+            <div class='error-message'>エラーが発生したためイベント一覧を表示できません</div>
+
+
+            <footer>
+                <p><small>&copy; 2024 volleyball</p>
+            </footer>
+
+        </body>
+        </html>";
+  exit();
+}
+// クエリパラメータが設定されているかどうかを確認し、セッションをクリアする
+if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
+  // セッションをクリアする
+  require_once 'sessionFunction.php';
+  sessionClear();
+}
   
   if(isset($_POST['submit'])){
-      try {
-            // ここで接続エラーが発生する可能性がある。
-            $pdo = new PDO("mysql:dbname=regist;host=localhost;", "root", "");
-           } catch (PDOException $e) {
-            // 接続エラーが発生した場合の処理
-             echo  
-              "<!doctype HTML>
+    try {
+      // ここで接続エラーが発生する可能性がある。
+      $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
+    } catch (PDOException $e) {
+      // 接続エラーが発生した場合の処理
+      echo
+      "<!doctype HTML>
                 <html lang=\"ja\">
                 <head>
                 <meta charset=\"utf-8\">
-                <title>アカウント登録完了画面</title>
+                <title>イベント一覧</title>
                 <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
                 </head>
                 <body>
-
+    
                 <header>
-                    <img src=\"diblog_logo.jpg\">
+                    <img src=\"./images/logo.jpeg\">
                     <ul class=\"menu\">
-                        <li>トップ</li>
-                        <li>プロフィール</li>
-                        <li>D.I.Blogについて</li>
-                        <li>登録フォーム</li>
-                        <li>問い合わせ</li>
-                        <li>その他</li>
-                        <li><a href=\"regist.php\">アカウント登録</a></li>
-                        <li><a href=\"list.php\">アカウント一覧</a></li>
+                        <li><a href=\"index.php\">イベント登録</a></li>
                     </ul>
                 </header>
-
-                <h1>アカウント登録完了画面</h1>
-
-
-                <div class='error-message'>エラーが発生したためアカウント登録できません</div>
-
-
+    
+                <h1>イベント一覧</h1>
+    
+    
+                <div class='error-message'>エラーが発生したためイベント一覧を表示できません</div>
+    
+    
                 <footer>
-                    <p>Copyright D.I.works| D.I.blog is the one which provides A to Z about programming</p>
+                    <p><small>&copy; 2024 volleyball</p>
                 </footer>
-
+    
             </body>
             </html>";
-            exit();
-          }
+      exit();
+    }
       
         $family_name = filter_input(INPUT_POST, 'family_name');
         $last_name = filter_input(INPUT_POST, 'last_name');
-        $family_name_kana = filter_input(INPUT_POST, 'family_name_kana');
-        $last_name_kana = filter_input(INPUT_POST, 'last_name_kana');
         $mail = filter_input(INPUT_POST, 'mail');
         $gender = filter_input(INPUT_POST, 'gender');
+        $grade = filter_input(INPUT_POST, 'grade');
         $authority = filter_input(INPUT_POST, 'authority');
 
         $where = array();
@@ -115,14 +127,6 @@
             $value[] = '%' . addcslashes($last_name, '\_%') . '%';
             $where[] = '(last_name like ?)';
         }
-        if ((isset($family_name_kana))and($family_name_kana !== '')) {
-            $value[] = '%' . addcslashes($family_name_kana, '\_%') . '%';
-            $where[] = '(family_name_kana like ?)';
-        }
-        if ((isset($last_name_kana))and($last_name_kana !== '')) {
-            $value[] = '%' . addcslashes($last_name_kana, '\_%') . '%';
-            $where[] = '(last_name_kana like ?)';
-        }
         if ((isset($mail))and($mail !== '')) {
             $value[] = '%' . addcslashes($mail, '\_%') . '%';
             $where[] = '(mail like ?)';
@@ -131,16 +135,20 @@
             $value[] = '%' . addcslashes($gender, '\_%') . '%';
             $where[] = '(gender like ?)';
         }
+        if ((isset($grade))and($grade !== '')) {
+          $value[] = '%' . addcslashes($grade, '\_%') . '%';
+          $where[] = '(grade like ?)';
+        }
         if ((isset($authority))and($authority !== '')) {
             $value[] = '%' . addcslashes($authority, '\_%') . '%';
             $where[] = '(authority like ?)';
         }
 
         if (count($where) > 0) {
-            $stmt = $pdo->prepare('select * from regist where ' . implode('and', $where) . ' order by id desc');
+            $stmt = $pdo->prepare('select * from actor where ' . implode('and', $where) . ' order by actor_id desc');
             $stmt->execute($value);
         }else{
-            $stmt = $pdo->query("select * from regist order by id desc");
+            $stmt = $pdo->query("select * from actor order by id desc");
         }
   }
 ?>
@@ -150,100 +158,111 @@
 
 <head>
     <meta charset="utf-8">
-    <title>アカウント一覧画面</title>
+    <title>参加者一覧画面</title>
     <link rel="stylesheet" type="text/css" href="style4.css">
 </head>
-    
+
 <body>
 
-  <header>
-    <img src="diblog_logo.jpg">
-      <ul  class="menu">
-        <li>トップ</li>
-        <li>プロフィール</li>
-        <li>D.I.Blogについて</li>
-        <li>登録フォーム</li>
-        <li>問い合わせ</li>
-        <li>その他</li>
-        <li><a href="regist.php?clear_session=true">アカウント登録</a></li>
-        <li><a href="list.php?clear_session=true">アカウント一覧</a></li>
-      </ul>
-  </header>
-    
-  <main>
-    <h1>アカウント一覧画面</h1>
-      
-    <div>  
-        <form action="" method="post">
-          <table border="1">
-            <tr>
-              <th>名前（姓）</th>
-              <td><input type="text" class="text" size="35" name="family_name" value="<?php echo (!empty($_POST['family_name'])) ? $_POST['family_name'] : ''; ?>"></td>
-              <th>名前（名）</th>
-              <td><input type="text" class="text" size="35" name="last_name" value="<?php echo (!empty($_POST['last_name'])) ? $_POST['last_name'] : ''; ?>"></td>
-            </tr>
-            <tr>
-              <th>カナ（姓）</th>
-              <td><input type="text" class="text" size="35" name="family_name_kana" value="<?php echo (!empty($_POST['family_name_kana'])) ? $_POST['family_name_kana'] : ''; ?>"></td>
-              <th>カナ（名）</th>
-              <td><input type="text" class="text" size="35" name="last_name_kana" value="<?php echo (!empty($_POST['last_name_kana'])) ? $_POST['last_name_kana'] : ''; ?>"></td>
-            </tr>
-            <tr>
-              <th>メールアドレス</th>
-              <td><input type="text" class="text" size="35" name="mail" value="<?php echo (!empty($_POST['mail'])) ? $_POST['mail'] : ''; ?>"></td>
-              <th>性別</th>
-              <td><label for="male">男</label>
-                  <input type="radio" class="text" checked="checked" name="gender" value="0" <?php echo (!empty($_POST['gender']) && $_POST['gender'] === '0') ? 'checked' : ''; ?>>
-                  <label for="female">女</label>
-                  <input type="radio" class="text" name="gender" value="1" <?php echo (!empty($_POST['gender']) && $_POST['gender'] === '1') ? 'checked' : ''; ?>>
-               </td>
-             </tr>
-             <tr>
-               <th>アカウント権限</th>
-               <td>
-                 <select class="text" name="authority">
-                   <option value="0" <?php echo (empty($_POST['authority']) || $_POST['authority'] == '0') ? 'selected' : ''; ?>>一般</option>
-                   <option value="1" <?php echo (!empty($_POST['authority']) && $_POST['authority'] == '1') ? 'selected' : ''; ?>>管理者</option>
-                 </select>  
-               </td>
-             </tr>
-             <tr>
-               <td colspan="4">
-                 <input type="submit" name="submit" value="検索">
-               </td> 
-             </tr>
-          </table>
-        </form>
-      </div>
-    
-    <?php if(isset($_POST['submit'])) :?>
+    <header>
+        <img src="./images/logo.jpeg" alt="logo-mark">
+        <ul class="menu">
+            <li><a href="index.php"></a>イベント一覧</li>
+            <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+            <li><a href="event.php?clear_session=true">イベント登録</a></li>
+            <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+        </ul>
+    </header>
 
-    <table border="1">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>名前（姓）</th>
-            <th>名前（名）</th>
-            <th>カナ（姓）</th>
-            <th>カナ（名）</th>
-            <th>メールアドレス</th>
-            <th>性別</th>
-            <th>アカウント権限</th>
-            <th>削除フラグ</th>
-            <th>登録日時</th>
-            <th>更新日時</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php
+    <main>
+        <h1>参加者一覧画面</h1>
+
+        <div>
+            <form action="" method="post">
+                <table border="1">
+                    <tr>
+                        <th>名前（姓）</th>
+                        <td><input type="text" class="text" size="35" name="family_name"
+                                value="<?php echo (!empty($_POST['family_name'])) ? $_POST['family_name'] : ''; ?>">
+                        </td>
+                        <th>名前（名）</th>
+                        <td><input type="text" class="text" size="35" name="last_name"
+                                value="<?php echo (!empty($_POST['last_name'])) ? $_POST['last_name'] : ''; ?>"></td>
+                    </tr>
+                    <tr>
+                        <th>メールアドレス</th>
+                        <td><input type="text" class="text" size="35" name="mail"
+                                value="<?php echo (!empty($_POST['mail'])) ? $_POST['mail'] : ''; ?>"></td>
+                        <th>性別</th>
+                        <td><label for="male">男</label>
+                            <input type="radio" class="text" checked="checked" name="gender" value="0"
+                                <?php echo (!empty($_POST['gender']) && $_POST['gender'] === '0') ? 'checked' : ''; ?>>
+                            <label for="female">女</label>
+                            <input type="radio" class="text" name="gender" value="1"
+                                <?php echo (!empty($_POST['gender']) && $_POST['gender'] === '1') ? 'checked' : ''; ?>>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>学年(M1は5年・M2は6年を選択)</th>
+                        <td>
+                            <select class="text" name="grade">
+                                <option value="" <?php echo (empty($_POST['grade']))? 'selected' : ''; ?>>
+                                </option>
+                                <?php
+                                    $grades = array(
+                                      '1', '2', '3', '4', '5', '6'
+                                    );
+                                    foreach ($grades as $grade) {
+                                      echo '<option value="' . $grade . '"';
+                                      echo (!empty($_POST['grade']) && $_POST['grade'] === $grade) ? ' selected' : '';
+                                      echo '>' . $grade . "年" . '</option>';
+                                    }
+                                    ?>
+                            </select>
+                        </td>
+                        <th>アカウント権限</th>
+                        <td>
+                            <select class="text" name="authority">
+                                <option value="0"
+                                    <?php echo (empty($_POST['authority']) || $_POST['authority'] == '0') ? 'selected' : ''; ?>>
+                                    一般</option>
+                                <option value="1"
+                                    <?php echo (!empty($_POST['authority']) && $_POST['authority'] == '1') ? 'selected' : ''; ?>>
+                                    管理者</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <input type="submit" name="submit" value="検索">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <?php if(isset($_POST['submit'])) :?>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名前（姓）</th>
+                    <th>名前（名）</th>
+                    <th>メールアドレス</th>
+                    <th>性別</th>
+                    <th>学年</th>
+                    <th>アカウント権限</th>
+                    <th>削除フラグ</th>
+                    <th>登録日時</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
           while ($row = $stmt->fetch()) {
             echo "<tr>";
-              echo "<td>{$row['id']}</td>";
+              echo "<td>{$row['actor_id']}</td>";
               echo "<td>{$row['family_name']}</td>";
-              echo "<td>{$row['last_name']}</td>";
-              echo "<td>{$row['family_name_kana']}</td>";
-              echo "<td>{$row['last_name_kana']}</td>";
               echo "<td>{$row['mail']}</td>";
               echo "<td>";
                 if($row['gender'] == 0){
@@ -252,6 +271,8 @@
                   echo "女";
                 }
               echo "</td>";
+
+              echo "<td>{$row['grade']}</td>";
               
               echo "<td>";
                 if($row['authority'] == 0){
@@ -276,20 +297,20 @@
               echo "<td>";
               echo date('Y/m/d',strtotime($row['update_time']));
               echo "</td>";
-              
-              echo "<td><a href='update.php?id={$row['id']}'>更新</a> | <a href='delete.php?id={$row['id']}'>削除</a></td>";
+    
             echo "</tr>";
           }
         ?>
-        </tbody>
-    </table>
-    <?php endif; ?>
-</main>
+            </tbody>
+        </table>
+        <?php endif; ?>
+    </main>
 
-    
-  <footer>
-    <p>Copyright D.I.works| D.I.blog is the one which provides A to Z about programming</p>
-  </footer>
-    
+
+    <footer>
+        <p><small>&copy; 2024 volleyball</p>
+    </footer>
+
 </body>
+
 </html>

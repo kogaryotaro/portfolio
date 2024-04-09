@@ -21,9 +21,9 @@ $date = isset($_SESSION['date']) ? $_SESSION['date'] : '';
 <body>
 
   <header>
-    <img src="./images/logo.jpeg" alt="logo-mark">
+    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
     <ul class="menu">
-      <li><a href="index.php"></a>イベント一覧</li>
+      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
       <li><a href="actor.php?clear_session=true">参加者登録</a></li>
       <li><a href="event.php?clear_session=true">イベント登録</a></li>
       <li><a href="list.php?clear_session=true">参加者一覧</a></li>
@@ -35,6 +35,10 @@ $date = isset($_SESSION['date']) ? $_SESSION['date'] : '';
   <div class="confirm">
     <p>イベント
       <?php echo $event_name; ?>
+    </p>
+
+    <p>イベント
+      <?php echo $address; ?>
     </p>
 
     <p>開催日(月)

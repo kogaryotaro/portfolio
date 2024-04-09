@@ -64,11 +64,18 @@ try {
         </html>";
   exit();
 }
+// クエリパラメータが設定されているかどうかを確認し、セッションをクリアする
+if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
+  // セッションをクリアする
+  require_once 'sessionFunction.php';
+  sessionClear();
+}
+
 $stmt = $pdo->query("select * from events order by date desc");
 //参加するボタンを押したときnumberカラムが1増える
 if(isset($_POST['submit'])){
   $id = isset($_POST['id']) ? $_POST['id'] : '';
-  $result=$pdo->exec("update event set number = number + 1 where id = $id");
+  $result=$pdo->exec("update events set number = number + 1 where event_id = $id");
 }
 
 ?>
@@ -97,9 +104,9 @@ if(isset($_POST['submit'])){
 
 <body>
   <header>
-    <img src="./images/logo.jpeg" alt="logo-mark">
+    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
     <ul class="menu">
-      <li><a href="index.php"></a>イベント一覧</li>
+      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
       <?php if ($login === 1) :  //幹事が操作できる  ?> 
         <li><a href="actor.php?clear_session=true">参加者登録</a></li>
         <li><a href="event.php?clear_session=true">イベント登録</a></li>
@@ -129,6 +136,7 @@ if(isset($_POST['submit'])){
             <th>場所</th>
             <th>月</th>
             <th>日</th>
+            <th>参加人数</th>
           </tr>
         </thead>
         <tbody>
@@ -140,12 +148,12 @@ if(isset($_POST['submit'])){
             echo "<td>{$row['month']}</td>";
             echo "<td>{$row['date']}</td>";
             echo "<td>{$row['number']}</td>";
-            echo "<td>{
+            echo "<td>
               <form action='' method='post'>
-                <input type='hidden' name='{$row["event_id"]}'>
+                <input type='hidden' value='{$row["event_id"]}' name='id'>
                 <input type='submit' name='submit' value='参加する'>
               </form>
-            }</td>";
+            </td>";
             if ($login = 1) {  //幹事が操作できる
               echo "<td><a href='event_delete.php?id={$row['event_id']}'>削除</a></td>";
               echo "<td><a href='event_update.php?id={$row['event_id']}'>更新</a></td>";

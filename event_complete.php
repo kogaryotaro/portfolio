@@ -54,48 +54,48 @@ $result =
 <html lang="ja">
 
 <head>
-  <meta charset="utf-8">
-  <title>イベント登録完了画面</title>
-  <link rel="stylesheet" type="text/css" href="style2.css">
+    <meta charset="utf-8">
+    <title>イベント登録完了画面</title>
+    <link rel="stylesheet" type="text/css" href="style2.css">
 </head>
 
 <body>
 
-  <header>
-    <img src="./images/logo.jpeg" alt="logo-mark">
-    <ul class="menu">
-      <li><a href="index.php"></a>イベント一覧</li>
-      <li><a href="actor.php?clear_session=true">参加者登録</a></li>
-      <li><a href="event.php?clear_session=true">イベント登録</a></li>
-      <li><a href="list.php?clear_session=true">参加者一覧</a></li>
-    </ul>
-  </header>
+    <header>
+        <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
+        <ul class="menu">
+            <li><a href="index.php?clear_session=true">イベント一覧</a></li>
+            <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+            <li><a href="event.php?clear_session=true">イベント登録</a></li>
+            <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+        </ul>
+    </header>
 
 
-  <h1>イベント登録完了画面</h1>
+    <h1>イベント登録完了画面</h1>
 
-  <?php
+    <?php
   if ($result !== false || $pdo !== false) {
     require_once 'sessionFunction.php';
     sessionClear();
   ?>
 
     <div class="complete">
-      <h2>登録完了しました</h2>
-      <form action="index.php" method="post">
-        <input type="submit" class="button2" value="TOPページに戻る">
+        <h2>登録完了しました</h2>
+        <form action="index.php" method="post">
+            <input type="submit" class="button2" value="TOPページに戻る">
     </div>
 
-  <?php
+    <?php
   } else {
     echo "<div class='error-message'>エラーが発生したため登録できません</div>";
   }
   ?>
 
 
-  <footer>
-    <p><small>&copy; 2024 volleyball</p>
-  </footer>
+    <footer>
+        <p><small>&copy; 2024 volleyball</p>
+    </footer>
 
 </body>
 

@@ -140,9 +140,9 @@ if ($login === 1) {
 
 <body>
   <header>
-    <img src="./images/logo.jpeg" alt="logo-mark">
+    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
     <ul class="menu">
-      <li><a href="index.php"></a>イベント一覧</li>
+      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
       <li><a href="actor.php?clear_session=true">参加者登録</a></li>
       <li><a href="event.php?clear_session=true">イベント登録</a></li>
       <li><a href="list.php?clear_session=true">参加者一覧</a></li>
@@ -184,15 +184,12 @@ if ($login === 1) {
           );
           foreach ($months as $month) {
             echo '<option value="' . $month . '"';
-            echo (!empty($_SESSION['month']) && $_SESSION['month'] === $month) ? 'selected' : (($event['month'] === $month) ? 'selected' : '');
+            echo (!empty($_SESSION['month']) && $_SESSION['month'] === $month) ? 'selected' : (($event['month'] == $month) ? 'selected' : '');
             echo '>' . $month . "月" . '</option>';
           }
           ?>
         </select>
       </div>
-
-      <?php echo $event['date'];?>
-
 
       <div>
         <label>開催日(日)　</label>
@@ -204,7 +201,7 @@ if ($login === 1) {
           );
           foreach ($dates as $date) {
             echo '<option value="' . $date . '"';
-            echo (!empty($_SESSION['date']) && $_SESSION['date'] === $date) ? 'selected' : (($event['date'] === $date) ? 'selected' : '');
+            echo (!empty($_SESSION['date']) && $_SESSION['date'] === $date) ? 'selected' : (($event['date'] == $date) ? 'selected' : '');
             echo '>' . $date . "日" . '</option>';
           }
           ?>

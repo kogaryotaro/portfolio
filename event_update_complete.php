@@ -52,8 +52,8 @@ $result = $pdo->exec("UPDATE events SET
     event_name = '$event_name',
     address = '$address',
     month = '$month',
-    date = '$date',
-  WHERE id = $id");
+    date = '$date'
+  WHERE event_id = $id");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 ?>
@@ -70,9 +70,9 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 <body>
 
   <header>
-    <img src="./images/logo.jpeg" alt="logo-mark">
+    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
     <ul class="menu">
-      <li><a href="index.php"></a>イベント一覧</li>
+      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
       <li><a href="actor.php?clear_session=true">参加者登録</a></li>
       <li><a href="event.php?clear_session=true">イベント登録</a></li>
       <li><a href="list.php?clear_session=true">参加者一覧</a></li>
@@ -90,7 +90,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     <div class="complete">
       <h2>更新完了しました</h2>
-      <form action="index.php" method="post">
+      <form action="index.php?" method="post">
         <input type="submit" class="button2" value="TOPページに戻る">
     </div>
 

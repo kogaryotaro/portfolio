@@ -3,6 +3,7 @@ mb_internal_encoding("utf8");
 session_start();
 
 $login = $_SESSION['login'];
+$login_id = $_SESSION['login_id'];
 
 //ユーザーじゃない人がアクセスしたとき
 if($login!=1 && $login!=0){
@@ -69,6 +70,14 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
   // セッションをクリアする
   require_once 'sessionFunction.php';
   sessionClear();
+}
+
+// ユーザーが参加済みかどうかをチェックする関数
+function isUserAlreadyJoined($pdo, $eventId, $userId) {
+  $stmt = $pdo->prepare("SELECT COUNT(*) FROM user_events WHERE event_id = ? AND user_id = ?");
+  $stmt->execute([$eventId, $userId]);
+  $count = $stmt->fetchColumn();
+  return $count > 0;
 }
 
 $stmt = $pdo->query("select * from events order by date desc");
@@ -154,7 +163,7 @@ if(isset($_POST['submit'])){
                 <input type='submit' name='submit' value='参加する'>
               </form>
             </td>";
-            if ($login = 1) {  //幹事が操作できる
+            if ($login == 1) {  //幹事が操作できる
               echo "<td><a href='event_delete.php?id={$row['event_id']}'>削除</a></td>";
               echo "<td><a href='event_update.php?id={$row['event_id']}'>更新</a></td>";
             }

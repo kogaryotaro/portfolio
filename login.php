@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $decrypted_password = openssl_decrypt($user['password'], 'AES-256-CBC', $key, 0, substr($key, 0, 16));
 
     if ($password == $decrypted_password) {
+      $_SESSION['login_id'] = $user['actor_id'];
       $_SESSION['login'] = $user['authority'];
 
       header('Location: index.php');

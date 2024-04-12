@@ -6,7 +6,7 @@ $login = $_SESSION['login'];
 $login_id = $_SESSION['login_id'];
 
 //ユーザーじゃない人がアクセスしたとき
-if($login!=1 && $login!=0){
+if ($login != 1 && $login != 0) {
   echo
   "<!doctype HTML>
             <html lang=\"ja\">
@@ -72,22 +72,71 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
   sessionClear();
 }
 
-// ユーザーが参加済みかどうかをチェックする関数
-function isUserAlreadyJoined($pdo, $eventId, $userId) {
+// ユーザーが「参加する」ボタンを押したときの処理
+if (isset($_POST['join_submit'])) {
+  $eventId = isset($_POST['join_id']) ? $_POST['join_id'] : '';
+  $userId = $_SESSION['login_id']; // ログイン中のユーザーID
+
+  // ユーザーが既に参加しているかどうかをチェック
   $stmt = $pdo->prepare("SELECT COUNT(*) FROM user_events WHERE event_id = ? AND user_id = ?");
   $stmt->execute([$eventId, $userId]);
   $count = $stmt->fetchColumn();
-  return $count > 0;
+
+  // ユーザーが参加していない場合は、参加情報を挿入してイベントの参加人数を増やす
+  if ($count == 0) {
+    $pdo->beginTransaction();
+    try {
+      // user_events テーブルに参加情報を挿入
+      $stmt = $pdo->prepare("INSERT INTO user_events (event_id, user_id) VALUES (?, ?)");
+      $stmt->execute([$eventId, $userId]);
+
+      // events テーブルの参加人数を1増やす
+      $stmt = $pdo->prepare("UPDATE events SET number = number + 1 WHERE event_id = ?");
+      $stmt->execute([$eventId]);
+
+      $pdo->commit();
+      echo "<div>参加しました</div>";
+    } catch (PDOException $e) {
+      $pdo->rollback();
+      echo "<div>参加に失敗しました</div>";
+    }
+  }
 }
 
-$stmt = $pdo->query("select * from events order by date desc");
-//参加するボタンを押したときnumberカラムが1増える
-if(isset($_POST['submit'])){
-  $id = isset($_POST['id']) ? $_POST['id'] : '';
-  $result=$pdo->exec("update events set number = number + 1 where event_id = $id");
+// ユーザーが「キャンセルする」ボタンを押したときの処理
+if (isset($_POST['cancel_submit'])) {
+  $cancelEventId = isset($_POST['cancel_id']) ? $_POST['cancel_id'] : '';
+  $userId = $_SESSION['login_id']; // ログイン中のユーザーID
+
+  // ユーザーが既に参加しているかどうかをチェック
+  $stmt = $pdo->prepare("SELECT COUNT(*) FROM user_events WHERE event_id = ? AND user_id = ?");
+  $stmt->execute([$cancelEventId, $userId]);
+  $count = $stmt->fetchColumn();
+
+  // ユーザーが参加している場合は、参加情報を削除してイベントの参加人数を減らす
+  if ($count > 0) {
+    $pdo->beginTransaction();
+    try {
+      // user_events テーブルから参加情報を削除
+      $stmt = $pdo->prepare("DELETE FROM user_events WHERE event_id = ? AND user_id = ?");
+      $stmt->execute([$cancelEventId, $userId]);
+
+      // events テーブルの参加人数を1減らす
+      $stmt = $pdo->prepare("UPDATE events SET number = number - 1 WHERE event_id = ?");
+      $stmt->execute([$cancelEventId]);
+
+      $pdo->commit();
+      echo "<div>キャンセルしました</div>";
+    } catch (PDOException $e) {
+      $pdo->rollback();
+      echo "<div>キャンセルに失敗しました</div>";
+    }
+  }
 }
 
+$stmt = $pdo->query("select * from events where delete_flag = 0 order by date desc");
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -116,7 +165,8 @@ if(isset($_POST['submit'])){
     <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
     <ul class="menu">
       <li><a href="index.php?clear_session=true">イベント一覧</a></li>
-      <?php if ($login === 1) :  //幹事が操作できる  ?> 
+      <?php if ($login === 1) :  //幹事が操作できる  
+      ?>
         <li><a href="actor.php?clear_session=true">参加者登録</a></li>
         <li><a href="event.php?clear_session=true">イベント登録</a></li>
         <li><a href="list.php?clear_session=true">参加者一覧</a></li>
@@ -157,12 +207,22 @@ if(isset($_POST['submit'])){
             echo "<td>{$row['month']}</td>";
             echo "<td>{$row['date']}</td>";
             echo "<td>{$row['number']}</td>";
-            echo "<td>
+            if ($count == 0) {
+              echo "<td>
               <form action='' method='post'>
-                <input type='hidden' value='{$row["event_id"]}' name='id'>
-                <input type='submit' name='submit' value='参加する'>
+                <input type='hidden' value='{$row["event_id"]}' name='join_id'>
+                <input type='submit' name='join_submit' value='参加する'>
               </form>
             </td>";
+            } else {
+              echo "<td>
+              <form action='' method='post'>
+                <input type='hidden' value='{$row["event_id"]}' name='cancel_id'>
+                <input type='submit' name='cansel_submit' value='キャンセルする'>
+              </form>
+            </td>";
+            }
+
             if ($login == 1) {  //幹事が操作できる
               echo "<td><a href='event_delete.php?id={$row['event_id']}'>削除</a></td>";
               echo "<td><a href='event_update.php?id={$row['event_id']}'>更新</a></td>";

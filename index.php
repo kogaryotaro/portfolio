@@ -72,9 +72,35 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
   sessionClear();
 }
 
+/*-------------ボタン用の関数とか-------------------*/
+
+// 既に参加しているかどうかをチェックする関数
+function isUserJoined($pdo, $eventId, $userId)
+{
+  $stmt = $pdo->prepare("SELECT COUNT(*) FROM user_events WHERE event_id = ? AND user_id = ?");
+  $stmt->execute([$eventId, $userId]);
+  $count = $stmt->fetchColumn();
+  return ($count > 0);
+}
+
+// ボタン表示用の変数
+$joinButtonLabel = "参加する";
+$joinButtonName = "join_submit";
+
+// ボタンを生成する関数
+function generateButton($eventId, $buttonLabel, $buttonName)
+{
+  return "<form action='' method='post'>
+                <input type='hidden' name='{$buttonName}_id' value='{$eventId}'>
+                <input type='submit' name='{$buttonName}' value='{$buttonLabel}'>
+            </form>";
+}
+
+/*---------------------ここまで-------------------*/
+
 // ユーザーが「参加する」ボタンを押したときの処理
 if (isset($_POST['join_submit'])) {
-  $eventId = isset($_POST['join_id']) ? $_POST['join_id'] : '';
+  $eventId = isset($_POST['join_submit_id']) ? $_POST['join_submit_id'] : '';
   $userId = $_SESSION['login_id']; // ログイン中のユーザーID
 
   // ユーザーが既に参加しているかどうかをチェック
@@ -95,7 +121,6 @@ if (isset($_POST['join_submit'])) {
       $stmt->execute([$eventId]);
 
       $pdo->commit();
-      echo "<div>参加しました</div>";
     } catch (PDOException $e) {
       $pdo->rollback();
       echo "<div>参加に失敗しました</div>";
@@ -105,7 +130,7 @@ if (isset($_POST['join_submit'])) {
 
 // ユーザーが「キャンセルする」ボタンを押したときの処理
 if (isset($_POST['cancel_submit'])) {
-  $cancelEventId = isset($_POST['cancel_id']) ? $_POST['cancel_id'] : '';
+  $cancelEventId = isset($_POST['cancel_submit_id']) ? $_POST['cancel_submit_id'] : '';
   $userId = $_SESSION['login_id']; // ログイン中のユーザーID
 
   // ユーザーが既に参加しているかどうかをチェック
@@ -126,7 +151,6 @@ if (isset($_POST['cancel_submit'])) {
       $stmt->execute([$cancelEventId]);
 
       $pdo->commit();
-      echo "<div>キャンセルしました</div>";
     } catch (PDOException $e) {
       $pdo->rollback();
       echo "<div>キャンセルに失敗しました</div>";
@@ -201,27 +225,25 @@ $stmt = $pdo->query("select * from events where delete_flag = 0 order by date de
         <tbody>
           <?php
           while ($row = $stmt->fetch()) {
+
+            // ユーザーが既に参加している場合は、ボタンのラベルと名前を変更
+            if (isset($_SESSION['login_id'])) {
+              $userId = $_SESSION['login_id'];
+              if (isUserJoined($pdo, $row['event_id'], $userId)) {
+                $joinButtonLabel = "キャンセルする";
+                $joinButtonName = "cancel_submit";
+              }
+            }
+
             echo "<tr>";
             echo "<td>{$row['event_name']}</td>";
             echo "<td>{$row['address']}</td>";
             echo "<td>{$row['month']}</td>";
             echo "<td>{$row['date']}</td>";
             echo "<td>{$row['number']}</td>";
-            if ($count == 0) {
-              echo "<td>
-              <form action='' method='post'>
-                <input type='hidden' value='{$row["event_id"]}' name='join_id'>
-                <input type='submit' name='join_submit' value='参加する'>
-              </form>
-            </td>";
-            } else {
-              echo "<td>
-              <form action='' method='post'>
-                <input type='hidden' value='{$row["event_id"]}' name='cancel_id'>
-                <input type='submit' name='cansel_submit' value='キャンセルする'>
-              </form>
-            </td>";
-            }
+            echo "<td>";
+            echo generateButton($row["event_id"], $joinButtonLabel, $joinButtonName);
+            echo "</td>";
 
             if ($login == 1) {  //幹事が操作できる
               echo "<td><a href='event_delete.php?id={$row['event_id']}'>削除</a></td>";

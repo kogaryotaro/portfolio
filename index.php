@@ -13,7 +13,7 @@ if ($login != 1 && $login != 0) {
             <head>
             <meta charset=\"utf-8\">
             <title>イベント一覧</title>
-            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/style.accessError.css\">
             </head>
             <body>
 
@@ -40,7 +40,7 @@ try {
             <head>
             <meta charset=\"utf-8\">
             <title>イベント一覧</title>
-            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/style.accessError.css\">
             </head>
             <body>
 
@@ -87,9 +87,9 @@ function isUserJoined($pdo, $eventId, $userId)
 function generateButton($eventId, $buttonLabel, $buttonName)
 {
   return "<form action='' method='post'>
-                <input type='hidden' name='{$buttonName}_id' value='{$eventId}'>
-                <input type='submit' name='{$buttonName}' value='{$buttonLabel}'>
-            </form>";
+            <input type='hidden' name='{$buttonName}_id' value='{$eventId}'>
+            <input type='submit' name='{$buttonName}' value='{$buttonLabel}'>
+          </form>";
 }
 
 /*---------------------ここまで-------------------*/
@@ -166,64 +166,62 @@ $stmt = $pdo->query("select * from events where delete_flag = 0 order by date de
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <title>参加イベント一覧画面</title>
-    <link rel="stylesheet" type="text/css" href="style3.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+  <meta charset="UTF-8">
+  <title>参加イベント一覧画面</title>
+  <link rel="stylesheet" type="text/css" href="./css/style.index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
-    <script>
+  <script>
     $(document).ready(function() {
-        $(".main-image").bxSlider({
-            auto: true,
-            mode: 'horizontal',
-            speed: 2000
-        });
+      $(".main-image").bxSlider({
+        auto: true,
+        mode: 'horizontal',
+        speed: 2000
+      });
     });
-    </script>
+  </script>
 </head>
 
 <body>
-    <header>
-        <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
-        <ul class="menu">
-            <li><a href="index.php?clear_session=true">イベント一覧</a></li>
-            <?php if ($login === 1) :  //幹事が操作できる  
+  <header>
+    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
+    <ul class="menu">
+      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
+      <?php if ($login === 1) :  //幹事が操作できる  
       ?>
-            <li><a href="actor.php?clear_session=true">参加者登録</a></li>
-            <li><a href="event.php?clear_session=true">イベント登録</a></li>
-            <li><a href="list.php?clear_session=true">参加者一覧</a></li>
-            <?php endif; ?>
-        </ul>
-    </header>
+        <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+        <li><a href="event.php?clear_session=true">イベント登録</a></li>
+        <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+      <?php endif; ?>
+    </ul>
+  </header>
 
-    <main>
-        <div class="wrapper">
-            <div class="main-image">
-                <div><img src="./images/main-view1.jpg"></div>
-                <div><img src="./images/main-view2.jpg"></div>
-                <div><img src="./images/main-view3.jpg"></div>
-                <div><img src="./images/main-view4.jpg"></div>
-            </div>
+  <main>
+    <div class="wrapper">
+      <div class="main-image">
+        <div><img src="./images/main-view1.jpg"></div>
+        <div><img src="./images/main-view2.jpg"></div>
+        <div><img src="./images/main-view3.jpg"></div>
+        <div><img src="./images/main-view4.jpg"></div>
+      </div>
 
-            <h2>参加できるイベント</h2>
+      <h2>参加できるイベント</h2>
+      <p class="event setsumei">イベント一覧</p>
 
-            <p class="">参加したいイベントを選んでください</p>
-            <p class="event setsumei">イベント一覧</p>
-
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>イベント名</th>
-                        <th>場所</th>
-                        <th>月</th>
-                        <th>日</th>
-                        <th>参加人数</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
+      <table>
+        <thead>
+          <tr>
+            <th>イベント名</th>
+            <th>場所</th>
+            <th>月</th>
+            <th>日</th>
+            <th>参加人数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
           // ボタン表示用の変数を配列で初期化
           $joinButtonLabels = array();
           $joinButtonNames = array();
@@ -266,14 +264,14 @@ $stmt = $pdo->query("select * from events where delete_flag = 0 order by date de
           }
 
           ?>
-                </tbody>
-            </table>
+        </tbody>
+      </table>
 
-        </div>
-    </main>
-    <footer>
-        <p><small>&copy; 2024 volleyball</p>
-    </footer>
+    </div>
+  </main>
+  <footer>
+    <p><small>&copy; 2024 volleyball</p>
+  </footer>
 </body>
 
 </html>

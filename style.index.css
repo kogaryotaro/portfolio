@@ -1,0 +1,165 @@
+/* Reset CSS */
+body, h1, h2, h3, p, ul, li, table, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.logo {
+    display: inline-block;
+    width: 100px;
+}
+
+.menu {
+    list-style-type: none;
+    margin-top: 10px;
+}
+
+.menu li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.menu li:last-child {
+    margin-right: 0;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.main-image {
+    margin-bottom: 20px;
+}
+
+.main-image img {
+    width: 100%;
+    height: auto;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.event {
+    font-weight: bold;
+    color: #333;
+}
+
+.setsumei {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td:last-child {
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+/* ロゴスタイル */
+
+header img {
+    width: 100%; /* 画像をロゴのサイズに合わせる */
+    height: auto; /* アスペクト比を保持しつつ画像を調整する */
+    display: inline-block;
+    width: 50px; /* ロゴの幅 */
+    height: 50px; /* ロゴの高さ */
+    margin-right: 10px; /* ロゴとテキストの間隔 */
+    border-radius: 50%; /* 円形のロゴ */
+    overflow: hidden; /* ロゴが枠外にはみ出さないようにする */
+}
+
+/* ヘッダースタイル */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: relative; /* ヘッダーを相対的に配置 */
+}
+
+.header-content {
+    display: flex; /* 要素を横並びにする */
+    justify-content: center; /* 要素を中央寄せする */
+    align-items: center; /* 要素を上下中央寄せする */
+}
+
+.menu {
+    list-style-type: none;
+    margin-top: 10px;
+    padding-left: 0; /* メニューの余白を削除 */
+}
+
+.menu li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.menu li:last-child {
+    margin-right: 0;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s ease; /* メニューのホバーエフェクトを追加 */
+}
+
+.menu a:hover {
+    color: #ffc107; /* ホバー時の色 */
+}
+
+/*スライダー画像*/
+.main-image img {
+    width: 100%; /* 画像の幅を100%に設定 */
+    height: 500px;
+    object-fit: cover; /* 画像を領域いっぱいに表示し、アスペクト比を保持する */
+}

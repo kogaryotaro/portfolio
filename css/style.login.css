@@ -1,0 +1,94 @@
+/* Reset CSS */
+body, h1, h2, h3, p, ul, li, table, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0; /* 上下の余白を調整 */
+    text-align: center;
+}
+
+/* ヘッダースタイル */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: relative; /* ヘッダーを相対的に配置 */
+}
+header img {
+    width: 100%; /* 画像をロゴのサイズに合わせる */
+    height: auto; /* アスペクト比を保持しつつ画像を調整する */
+    display: inline-block;
+    width: 50px; /* ロゴの幅 */
+    height: 50px; /* ロゴの高さ */
+    margin-right: 10px; /* ロゴとテキストの間隔 */
+    border-radius: 50%; /* 円形のロゴ */
+    overflow: hidden; /* ロゴが枠外にはみ出さないようにする */
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+    display: inline-block; /* フォームをインラインブロックに変更 */
+    text-align: center; /* フォーム内の要素を左寄せ */
+}
+
+label {
+    display: block; /* インラインからブロックに変更 */
+    width: 100%;
+    margin-bottom: 5px; /* マージンを追加 */
+    text-align: left; /* ラベルを左寄せ */
+}
+
+.text {
+    width: calc(100% - 20px); /* 幅を調整し、パディングを考慮 */
+    padding: 8px;
+    margin-bottom: 15px; /* マージンを追加 */
+    border: 1px solid #ccc; /* 枠線を追加 */
+    border-radius: 5px; /* 角を丸くする */
+}
+
+.submit {
+    padding: 8px 16px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.submit:hover {
+    background-color: #555;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}

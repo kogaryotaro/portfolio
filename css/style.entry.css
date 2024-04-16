@@ -1,0 +1,222 @@
+/* Reset CSS */
+body, h1, h2, h3, p, ul, li, table, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+/* ヘッダースタイル */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: relative; /* ヘッダーを相対的に配置 */
+}
+header img {
+    width: 100%; /* 画像をロゴのサイズに合わせる */
+    height: auto; /* アスペクト比を保持しつつ画像を調整する */
+    display: inline-block;
+    width: 50px; /* ロゴの幅 */
+    height: 50px; /* ロゴの高さ */
+    margin-right: 10px; /* ロゴとテキストの間隔 */
+    border-radius: 50%; /* 円形のロゴ */
+    overflow: hidden; /* ロゴが枠外にはみ出さないようにする */
+}
+
+.header-content {
+    display: flex; /* 要素を横並びにする */
+    justify-content: center; /* 要素を中央寄せする */
+    align-items: center; /* 要素を上下中央寄せする */
+}
+
+.menu {
+    list-style-type: none;
+    margin-top: 10px;
+    padding-left: 0; /* メニューの余白を削除 */
+}
+
+.menu li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.menu li:last-child {
+    margin-right: 0;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s ease; /* メニューのホバーエフェクトを追加 */
+}
+
+.menu a:hover {
+    color: #ffc107; /* ホバー時の色 */
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.menu {
+    list-style-type: none;
+    margin-top: 10px;
+}
+
+.menu li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.menu li:last-child {
+    margin-right: 0;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    text-align: center;
+}
+
+form {
+    margin: 0 auto;
+    max-width: 400px;
+}
+
+form div {
+    margin-bottom: 10px;
+}
+
+label {
+    display: inline-block;
+    width: 120px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-block;
+    width: calc(100% - 140px); /* 入力フィールドの幅を調整 */
+}
+
+input[type="radio"] select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-block;
+}
+select {
+    width: calc(100% - 140px); /* セレクトボックスの幅を調整 */
+}
+.gender-input {
+    display: inline-block;
+    margin-right: 20px; /* ラベルとラジオボタンの間隔 */
+}
+
+.gender-input span {
+    margin-right: 5px; /* ラジオボタンとテキストの間隔 */
+    margin-left: 40px;
+}
+
+input[type="submit"] {
+    width: auto;
+    padding: 8px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+
+
+
+/* 参加者登録確認画面のスタイル */
+.confirm {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.confirm .confirm-wrapper{
+    text-align: left;
+    margin-left: 20%;
+}
+
+.confirm p {
+    margin-bottom: 20px;
+}
+
+.confirm span {
+    margin-left: 20%;
+    font-weight: bold;
+}
+
+.confirm-form{
+    display: flex;
+    justify-content: center;
+}
+
+.confirm-form form{
+    max-width: 200px;
+}
+
+.confirm .button1,
+.confirm .button2 {
+    max-width: 200px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.confirm .button1 {
+    background-color: #ccc;
+    color: #333;
+}
+
+.confirm .button2 {
+    background-color: #007bff;
+    color: #fff;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}

@@ -14,7 +14,7 @@ try {
               <head>
               <meta charset=\"utf-8\">
               <title>イベント一覧</title>
-              <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+              <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/style.accessError.css\">
               </head>
               <body>
   
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="utf-8">
   <title>ログイン画面</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.login.css">
 </head>
 
 <body>

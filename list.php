@@ -5,14 +5,14 @@ session_start();
 $login = $_SESSION['login'];
 
 //ユーザーじゃない人がアクセスしたとき
-if($login!=1 && $login!=0){
+if ($login != 1 && $login != 0) {
   echo
   "<!doctype HTML>
             <html lang=\"ja\">
             <head>
             <meta charset=\"utf-8\">
             <title>イベント一覧</title>
-            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/style.accessError.css\">
             </head>
             <body>
 
@@ -39,7 +39,7 @@ try {
             <head>
             <meta charset=\"utf-8\">
             <title>イベント一覧</title>
-            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"style.accessError.css\">
             </head>
             <body>
 
@@ -70,20 +70,20 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
   require_once 'sessionFunction.php';
   sessionClear();
 }
-  
-  if(isset($_POST['submit'])){
-    try {
-      // ここで接続エラーが発生する可能性がある。
-      $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
-    } catch (PDOException $e) {
-      // 接続エラーが発生した場合の処理
-      echo
-      "<!doctype HTML>
+
+if (isset($_POST['submit'])) {
+  try {
+    // ここで接続エラーが発生する可能性がある。
+    $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
+  } catch (PDOException $e) {
+    // 接続エラーが発生した場合の処理
+    echo
+    "<!doctype HTML>
                 <html lang=\"ja\">
                 <head>
                 <meta charset=\"utf-8\">
                 <title>イベント一覧</title>
-                <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/style.accessError.css\">
                 </head>
                 <body>
     
@@ -106,51 +106,51 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
     
             </body>
             </html>";
-      exit();
-    }
-      
-        $family_name = filter_input(INPUT_POST, 'family_name');
-        $last_name = filter_input(INPUT_POST, 'last_name');
-        $mail = filter_input(INPUT_POST, 'mail');
-        $gender = filter_input(INPUT_POST, 'gender');
-        $grade = filter_input(INPUT_POST, 'grade');
-        $authority = filter_input(INPUT_POST, 'authority');
-
-        $where = array();
-        $value = array();
-
-        if ((isset($family_name))and($family_name !== '')) {
-            $value[] = '%' . addcslashes($family_name, '\_%') . '%';
-            $where[] = '(family_name like ?)';
-        }
-        if ((isset($last_name))and($last_name !== '')) {
-            $value[] = '%' . addcslashes($last_name, '\_%') . '%';
-            $where[] = '(last_name like ?)';
-        }
-        if ((isset($mail))and($mail !== '')) {
-            $value[] = '%' . addcslashes($mail, '\_%') . '%';
-            $where[] = '(mail like ?)';
-        }
-        if ((isset($gender))and($gender !== '')) {
-            $value[] = '%' . addcslashes($gender, '\_%') . '%';
-            $where[] = '(gender like ?)';
-        }
-        if ((isset($grade))and($grade !== '')) {
-          $value[] = '%' . addcslashes($grade, '\_%') . '%';
-          $where[] = '(grade like ?)';
-        }
-        if ((isset($authority))and($authority !== '')) {
-            $value[] = '%' . addcslashes($authority, '\_%') . '%';
-            $where[] = '(authority like ?)';
-        }
-
-        if (count($where) > 0) {
-            $stmt = $pdo->prepare('select * from actor where ' . implode('and', $where) . ' order by actor_id desc');
-            $stmt->execute($value);
-        }else{
-            $stmt = $pdo->query("select * from actor order by id desc");
-        }
+    exit();
   }
+
+  $family_name = filter_input(INPUT_POST, 'family_name');
+  $last_name = filter_input(INPUT_POST, 'last_name');
+  $mail = filter_input(INPUT_POST, 'mail');
+  $gender = filter_input(INPUT_POST, 'gender');
+  $grade = filter_input(INPUT_POST, 'grade');
+  $authority = filter_input(INPUT_POST, 'authority');
+
+  $where = array();
+  $value = array();
+
+  if ((isset($family_name)) and ($family_name !== '')) {
+    $value[] = '%' . addcslashes($family_name, '\_%') . '%';
+    $where[] = '(family_name like ?)';
+  }
+  if ((isset($last_name)) and ($last_name !== '')) {
+    $value[] = '%' . addcslashes($last_name, '\_%') . '%';
+    $where[] = '(last_name like ?)';
+  }
+  if ((isset($mail)) and ($mail !== '')) {
+    $value[] = '%' . addcslashes($mail, '\_%') . '%';
+    $where[] = '(mail like ?)';
+  }
+  if ((isset($gender)) and ($gender !== '')) {
+    $value[] = '%' . addcslashes($gender, '\_%') . '%';
+    $where[] = '(gender like ?)';
+  }
+  if ((isset($grade)) and ($grade !== '')) {
+    $value[] = '%' . addcslashes($grade, '\_%') . '%';
+    $where[] = '(grade like ?)';
+  }
+  if ((isset($authority)) and ($authority !== '')) {
+    $value[] = '%' . addcslashes($authority, '\_%') . '%';
+    $where[] = '(authority like ?)';
+  }
+
+  if (count($where) > 0) {
+    $stmt = $pdo->prepare('select * from actor where ' . implode('and', $where) . ' order by actor_id desc');
+    $stmt->execute($value);
+  } else {
+    $stmt = $pdo->query("select * from actor order by id desc");
+  }
+}
 ?>
 
 <!doctype html>
@@ -159,18 +159,21 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
 <head>
     <meta charset="utf-8">
     <title>参加者一覧画面</title>
-    <link rel="stylesheet" type="text/css" href="style4.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.list.css">
 </head>
 
 <body>
 
     <header>
-        <img src="./images/logo.jpeg" alt="logo-mark">
+        <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
         <ul class="menu">
-            <li><a href="index.php"></a>イベント一覧</li>
+            <li><a href="index.php?clear_session=true">イベント一覧</a></li>
+            <?php if ($login === 1) :  //幹事が操作できる  
+      ?>
             <li><a href="actor.php?clear_session=true">参加者登録</a></li>
             <li><a href="event.php?clear_session=true">イベント登録</a></li>
             <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+            <?php endif; ?>
         </ul>
     </header>
 
@@ -179,7 +182,7 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
 
         <div>
             <form action="" method="post">
-                <table border="1">
+                <table>
                     <tr>
                         <th>名前（姓）</th>
                         <td><input type="text" class="text" size="35" name="family_name"
@@ -206,18 +209,18 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
                         <th>学年(M1は5年・M2は6年を選択)</th>
                         <td>
                             <select class="text" name="grade">
-                                <option value="" <?php echo (empty($_POST['grade']))? 'selected' : ''; ?>>
+                                <option value="" <?php echo (empty($_POST['grade'])) ? 'selected' : ''; ?>>
                                 </option>
                                 <?php
-                                    $grades = array(
-                                      '1', '2', '3', '4', '5', '6'
-                                    );
-                                    foreach ($grades as $grade) {
-                                      echo '<option value="' . $grade . '"';
-                                      echo (!empty($_POST['grade']) && $_POST['grade'] === $grade) ? ' selected' : '';
-                                      echo '>' . $grade . "年" . '</option>';
-                                    }
-                                    ?>
+                $grades = array(
+                  '1', '2', '3', '4', '5', '6'
+                );
+                foreach ($grades as $grade) {
+                  echo '<option value="' . $grade . '"';
+                  echo (!empty($_POST['grade']) && $_POST['grade'] === $grade) ? ' selected' : '';
+                  echo '>' . $grade . "年" . '</option>';
+                }
+                ?>
                             </select>
                         </td>
                         <th>アカウント権限</th>
@@ -241,9 +244,9 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
             </form>
         </div>
 
-        <?php if(isset($_POST['submit'])) :?>
+        <?php if (isset($_POST['submit'])) : ?>
 
-        <table border="1">
+        <table>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -261,46 +264,42 @@ if (isset($_GET['clear_session']) && $_GET['clear_session'] === 'true') {
                 <?php
           while ($row = $stmt->fetch()) {
             echo "<tr>";
-              echo "<td>{$row['actor_id']}</td>";
-              echo "<td>{$row['family_name']}</td>";
-              echo "<td>{$row['mail']}</td>";
-              echo "<td>";
-                if($row['gender'] == 0){
-                  echo "男";
-                }elseif($row['gender'] == 1){
-                  echo "女";
-                }
-              echo "</td>";
+            echo "<td>{$row['actor_id']}</td>";
+            echo "<td>{$row['family_name']}</td>";
+            echo "<td>{$row['last_name']}</td>";
+            echo "<td>{$row['mail']}</td>";
+            echo "<td>";
+            if ($row['gender'] == 0) {
+              echo "男";
+            } elseif ($row['gender'] == 1) {
+              echo "女";
+            }
+            echo "</td>";
 
-              echo "<td>{$row['grade']}</td>";
-              
-              echo "<td>";
-                if($row['authority'] == 0){
-                  echo "一般";
-                }elseif($row['authority'] == 1){
-                  echo "管理者";
-                }
-              echo "</td>";
-              
-              echo "<td>";
-                if($row['delete_flag'] == 0){
-                  echo "有効";
-                }elseif($row['delete_flag'] == 1){
-                  echo "無効";
-                }
-              "</td>";
-              
-              echo "<td>";
-              echo date('Y/m/d',strtotime($row['registered_time']));
-              echo "</td>";
-              
-              echo "<td>";
-              echo date('Y/m/d',strtotime($row['update_time']));
-              echo "</td>";
-    
+            echo "<td>{$row['grade']}</td>";
+
+            echo "<td>";
+            if ($row['authority'] == 0) {
+              echo "一般";
+            } elseif ($row['authority'] == 1) {
+              echo "管理者";
+            }
+            echo "</td>";
+
+            echo "<td>";
+            if ($row['delete_flag'] == 0) {
+              echo "有効";
+            } elseif ($row['delete_flag'] == 1) {
+              echo "無効";
+            }
+            "</td>";
+
+            echo "<td>";
+            echo date('Y/m/d', strtotime($row['registered_time']));
+            echo "</td>";
             echo "</tr>";
           }
-        ?>
+          ?>
             </tbody>
         </table>
         <?php endif; ?>

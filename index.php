@@ -83,10 +83,6 @@ function isUserJoined($pdo, $eventId, $userId)
   return ($count > 0);
 }
 
-// ボタン表示用の変数
-$joinButtonLabel = "参加する";
-$joinButtonName = "join_submit";
-
 // ボタンを生成する関数
 function generateButton($eventId, $buttonLabel, $buttonName)
 {
@@ -97,6 +93,8 @@ function generateButton($eventId, $buttonLabel, $buttonName)
 }
 
 /*---------------------ここまで-------------------*/
+
+$message = "";
 
 // ユーザーが「参加する」ボタンを押したときの処理
 if (isset($_POST['join_submit'])) {
@@ -121,9 +119,10 @@ if (isset($_POST['join_submit'])) {
       $stmt->execute([$eventId]);
 
       $pdo->commit();
+      $message = "参加しました";
     } catch (PDOException $e) {
       $pdo->rollback();
-      echo "<div>参加に失敗しました</div>";
+      $message = "参加に失敗しました";
     }
   }
 }
@@ -151,9 +150,10 @@ if (isset($_POST['cancel_submit'])) {
       $stmt->execute([$cancelEventId]);
 
       $pdo->commit();
+      $message = "参加をキャンセルしました";
     } catch (PDOException $e) {
       $pdo->rollback();
-      echo "<div>キャンセルに失敗しました</div>";
+      $message = "キャンセルに失敗しました";
     }
   }
 }
@@ -166,65 +166,73 @@ $stmt = $pdo->query("select * from events where delete_flag = 0 order by date de
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8">
-  <title>参加イベント一覧画面</title>
-  <link rel="stylesheet" type="text/css" href="style3.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <meta charset="UTF-8">
+    <title>参加イベント一覧画面</title>
+    <link rel="stylesheet" type="text/css" href="style3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
-  <script>
+    <script>
     $(document).ready(function() {
-      $(".main-image").bxSlider({
-        auto: true,
-        mode: 'horizontal',
-        speed: 2000
-      });
+        $(".main-image").bxSlider({
+            auto: true,
+            mode: 'horizontal',
+            speed: 2000
+        });
     });
-  </script>
+    </script>
 </head>
 
 <body>
-  <header>
-    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
-    <ul class="menu">
-      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
-      <?php if ($login === 1) :  //幹事が操作できる  
+    <header>
+        <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
+        <ul class="menu">
+            <li><a href="index.php?clear_session=true">イベント一覧</a></li>
+            <?php if ($login === 1) :  //幹事が操作できる  
       ?>
-        <li><a href="actor.php?clear_session=true">参加者登録</a></li>
-        <li><a href="event.php?clear_session=true">イベント登録</a></li>
-        <li><a href="list.php?clear_session=true">参加者一覧</a></li>
-      <?php endif; ?>
-    </ul>
-  </header>
+            <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+            <li><a href="event.php?clear_session=true">イベント登録</a></li>
+            <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+            <?php endif; ?>
+        </ul>
+    </header>
 
-  <main>
-    <div class="wrapper">
-      <div class="main-image">
-        <div><img src="./images/main-view1.jpg"></div>
-        <div><img src="./images/main-view2.jpg"></div>
-        <div><img src="./images/main-view3.jpg"></div>
-        <div><img src="./images/main-view4.jpg"></div>
-      </div>
+    <main>
+        <div class="wrapper">
+            <div class="main-image">
+                <div><img src="./images/main-view1.jpg"></div>
+                <div><img src="./images/main-view2.jpg"></div>
+                <div><img src="./images/main-view3.jpg"></div>
+                <div><img src="./images/main-view4.jpg"></div>
+            </div>
 
-      <h2>参加できるイベント</h2>
+            <h2>参加できるイベント</h2>
 
-      <p class="">参加したいイベントを選んでください</p>
-      <p class="event setsumei">イベント一覧</p>
+            <p class="">参加したいイベントを選んでください</p>
+            <p class="event setsumei">イベント一覧</p>
 
-      <table border="1">
-        <thead>
-          <tr>
-            <th>イベント名</th>
-            <th>場所</th>
-            <th>月</th>
-            <th>日</th>
-            <th>参加人数</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>イベント名</th>
+                        <th>場所</th>
+                        <th>月</th>
+                        <th>日</th>
+                        <th>参加人数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+          // ボタン表示用の変数を配列で初期化
+          $joinButtonLabels = array();
+          $joinButtonNames = array();
+
+          // ユーザーが既に参加しているかどうかをチェックし、ボタンのラベルと名前を設定
           while ($row = $stmt->fetch()) {
+            // イベントごとに変数を初期化
+            $joinButtonLabel = "参加する";
+            $joinButtonName = "join_submit";
 
             // ユーザーが既に参加している場合は、ボタンのラベルと名前を変更
             if (isset($_SESSION['login_id'])) {
@@ -234,6 +242,11 @@ $stmt = $pdo->query("select * from events where delete_flag = 0 order by date de
                 $joinButtonName = "cancel_submit";
               }
             }
+
+            // イベントごとのボタン情報を配列に保存
+            $joinButtonLabels[$row['event_id']] = $joinButtonLabel;
+            $joinButtonNames[$row['event_id']] = $joinButtonName;
+
 
             echo "<tr>";
             echo "<td>{$row['event_name']}</td>";
@@ -251,15 +264,16 @@ $stmt = $pdo->query("select * from events where delete_flag = 0 order by date de
             }
             echo "</tr>";
           }
-          ?>
-        </tbody>
-      </table>
 
-    </div>
-  </main>
-  <footer>
-    <p><small>&copy; 2024 volleyball</p>
-  </footer>
+          ?>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+    <footer>
+        <p><small>&copy; 2024 volleyball</p>
+    </footer>
 </body>
 
 </html>

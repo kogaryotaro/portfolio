@@ -162,6 +162,12 @@ input[type="submit"]:hover {
 
 
 /* 参加者登録確認画面のスタイル */
+
+h1{
+    margin: 20px 0;
+    text-align: center;
+}
+
 .confirm {
     background-color: #fff;
     padding: 20px;
@@ -213,6 +219,20 @@ input[type="submit"]:hover {
     background-color: #007bff;
     color: #fff;
 }
+
+/*-------------完了画面----------------------*/
+.complete {
+    background-color: #d4edda; 
+    color: #155724; 
+    padding: 20px; 
+    text-align: center; 
+    margin: 20px auto; 
+    max-width: 600px;
+    border-radius: 5px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+
 
 footer {
     background-color: #333;

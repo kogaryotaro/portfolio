@@ -1,5 +1,6 @@
 <?php
 session_start();
+$login = isset($_SESSION['login']) ? $_SESSION['login'] : '';
 //SESSIONを各名前の変数に格納する
 $family_name = isset($_SESSION['family_name']) ? $_SESSION['family_name'] : '';
 $last_name = isset($_SESSION['last_name']) ? $_SESSION['last_name'] : '';
@@ -32,7 +33,7 @@ try {
             <head>
             <meta charset=\"utf-8\">
             <title>参加者登録完了画面</title>
-            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/style.accessError.css\">
             </head>
             <body>
 
@@ -69,18 +70,21 @@ $result =
 <head>
   <meta charset="utf-8">
   <title>参加者登録完了画面</title>
-  <link rel="stylesheet" type="text/css" href="style2.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.entry.css">
 </head>
 
 <body>
 
   <header>
-    <img src="./images/logo.jpeg" alt="logo-mark">
+    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
     <ul class="menu">
-      <li><a href="index.php"></a>イベント一覧</li>
-      <li><a href="actor.php?clear_session=true">参加者登録</a></li>
-      <li><a href="event.php?clear_session=true">イベント登録</a></li>
-      <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
+      <?php if ($login === 1) :  //幹事が操作できる  
+      ?>
+        <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+        <li><a href="event.php?clear_session=true">イベント登録</a></li>
+        <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+      <?php endif; ?>
     </ul>
   </header>
 

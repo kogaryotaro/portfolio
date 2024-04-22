@@ -60,8 +60,8 @@ if ($login === 1) {
     // 入力チェック
     if (empty($event_name)) {
       $errors['event_name'] = 'イベントが未入力です。';
-    } elseif (mb_strlen($event_name, 'UTF-8') > 10 || !preg_match('/^[ぁ-んァ-ン一-龠]+$/u', $event_name)) {
-      $errors['event_name'] = 'イベントはひらがな、漢字のみ入力可能で、最大10文字です。';
+    } elseif (mb_strlen($event_name, 'UTF-8') > 100 || !preg_match('/^[ぁ-んァ-ン一-龠]+$/u', $event_name)) {
+      $errors['event_name'] = 'イベントはひらがな、漢字のみ入力可能で、最大100文字です。';
     }
 
     if (empty($address)) {
@@ -177,7 +177,7 @@ if ($login === 1) {
       <div>
         <label>開催日(月)　</label>
         <select class="text" name="month">
-          <option value="" > </option>
+          <option value=""> </option>
           <?php
           $months = array(
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'
@@ -194,7 +194,7 @@ if ($login === 1) {
       <div>
         <label>開催日(日)　</label>
         <select class="text" name="date">
-          <option value="" > </option>
+          <option value=""> </option>
           <?php
           $dates = array(
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'

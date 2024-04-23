@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div>
         <?php if (!empty($loginError)) : ?>
-          <p>
+          <p class='error-message'>
             <?php echo $loginError; ?>
           </p>
         <?php endif; ?>
@@ -131,7 +131,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" class="text" size="35" name="family_name" value="<?php echo (!empty($_POST['family_name'])) ? $_POST['family_name'] : ""; ?>">
 
         <?php if (!empty($errors['family_name'])) : ?>
-          <p><?php echo $errors['family_name']; ?></p>
+          <p class='error-message'>
+            <?php echo $errors['family_name']; ?>
+          </p>
         <?php endif; ?>
       </div>
 
@@ -140,7 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" class="text" size="35" name="last_name" value="<?php echo (!empty($_POST['last_name'])) ? $_POST['last_name'] : ""; ?>">
 
         <?php if (!empty($errors['last_name'])) : ?>
-          <p><?php echo $errors['last_name']; ?></p>
+          <p class='error-message'>
+            <?php echo $errors['last_name']; ?>
+          </p>
         <?php endif; ?>
       </div>
 
@@ -149,7 +153,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" class="text" size="35" name="password" value="<?php echo (!empty($_POST['password'])) ? $_POST['password'] : ""; ?>">
 
         <?php if (!empty($errors['password'])) : ?>
-          <p><?php echo $errors['password']; ?></p>
+          <p class='error-message'>
+            <?php echo $errors['password']; ?>
+          </p>
         <?php endif; ?>
       </div>
 

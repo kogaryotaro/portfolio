@@ -1,5 +1,6 @@
 <?php
 session_start();
+$login = isset($_SESSION['login']) ? $_SESSION['login'] : '';
 //SESSIONを各名前の変数に格納する
 $id = isset($_SESSION['id']) ? $_SESSION['id'] : '';
 $event_name = isset($_SESSION['event_name']) ? $_SESSION['event_name'] : '';
@@ -20,7 +21,7 @@ try {
               <head>
               <meta charset=\"utf-8\">
               <title>イベント登録完了画面</title>
-              <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+              <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/style.accessError.css\">
               </head>
               <body>
   
@@ -64,7 +65,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 <head>
   <meta charset="utf-8">
   <title>イベント更新完了画面</title>
-  <link rel="stylesheet" type="text/css" href="style2.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.event.css">
 </head>
 
 <body>
@@ -73,9 +74,12 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
     <ul class="menu">
       <li><a href="index.php?clear_session=true">イベント一覧</a></li>
-      <li><a href="actor.php?clear_session=true">参加者登録</a></li>
-      <li><a href="event.php?clear_session=true">イベント登録</a></li>
-      <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+      <?php if ($login === 1) :  //幹事が操作できる  
+      ?>
+        <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+        <li><a href="event.php?clear_session=true">イベント登録</a></li>
+        <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+      <?php endif; ?>
     </ul>
   </header>
 

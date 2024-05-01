@@ -5,7 +5,7 @@ session_start();
 $login = $_SESSION['login'];
 
 //ユーザーじゃない人がアクセスしたとき
-if ($login != 1 && $login != 0) {
+if ($login !== 1) {
   echo
   "<!doctype HTML>
             <html lang=\"ja\">
@@ -157,61 +157,56 @@ if (isset($_POST['submit'])) {
 <html lang="ja">
 
 <head>
-    <meta charset="utf-8">
-    <title>参加者一覧画面</title>
-    <link rel="stylesheet" type="text/css" href="./css/style.list.css">
+  <meta charset="utf-8">
+  <title>参加者一覧画面</title>
+  <link rel="stylesheet" type="text/css" href="./css/style.list.css">
 </head>
 
 <body>
 
-    <header>
-        <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
-        <ul class="menu">
-            <li><a href="index.php?clear_session=true">イベント一覧</a></li>
-            <?php if ($login === 1) :  //幹事が操作できる  
+  <header>
+    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
+    <ul class="menu">
+      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
+      <?php if ($login === 1) :  //幹事が操作できる  
       ?>
-            <li><a href="actor.php?clear_session=true">参加者登録</a></li>
-            <li><a href="event.php?clear_session=true">イベント登録</a></li>
-            <li><a href="list.php?clear_session=true">参加者一覧</a></li>
-            <?php endif; ?>
-        </ul>
-    </header>
+        <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+        <li><a href="event.php?clear_session=true">イベント登録</a></li>
+        <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+      <?php endif; ?>
+    </ul>
+  </header>
 
-    <main>
-        <h1>参加者一覧画面</h1>
+  <main>
+    <h1>参加者一覧画面</h1>
 
-        <div>
-            <form action="" method="post">
-                <table>
-                    <tr>
-                        <th>名前（姓）</th>
-                        <td><input type="text" class="text" size="35" name="family_name"
-                                value="<?php echo (!empty($_POST['family_name'])) ? $_POST['family_name'] : ''; ?>">
-                        </td>
-                        <th>名前（名）</th>
-                        <td><input type="text" class="text" size="35" name="last_name"
-                                value="<?php echo (!empty($_POST['last_name'])) ? $_POST['last_name'] : ''; ?>"></td>
-                    </tr>
-                    <tr>
-                        <th>メールアドレス</th>
-                        <td><input type="text" class="text" size="35" name="mail"
-                                value="<?php echo (!empty($_POST['mail'])) ? $_POST['mail'] : ''; ?>"></td>
-                        <th>性別</th>
-                        <td><label for="male">男</label>
-                            <input type="radio" class="text" checked="checked" name="gender" value="0"
-                                <?php echo (!empty($_POST['gender']) && $_POST['gender'] === '0') ? 'checked' : ''; ?>>
-                            <label for="female">女</label>
-                            <input type="radio" class="text" name="gender" value="1"
-                                <?php echo (!empty($_POST['gender']) && $_POST['gender'] === '1') ? 'checked' : ''; ?>>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>学年(M1は5年・M2は6年を選択)</th>
-                        <td>
-                            <select class="text" name="grade">
-                                <option value="" <?php echo (empty($_POST['grade'])) ? 'selected' : ''; ?>>
-                                </option>
-                                <?php
+    <div>
+      <form action="" method="post">
+        <table>
+          <tr>
+            <th>名前（姓）</th>
+            <td><input type="text" class="text" size="35" name="family_name" value="<?php echo (!empty($_POST['family_name'])) ? $_POST['family_name'] : ''; ?>">
+            </td>
+            <th>名前（名）</th>
+            <td><input type="text" class="text" size="35" name="last_name" value="<?php echo (!empty($_POST['last_name'])) ? $_POST['last_name'] : ''; ?>"></td>
+          </tr>
+          <tr>
+            <th>メールアドレス</th>
+            <td><input type="text" class="text" size="35" name="mail" value="<?php echo (!empty($_POST['mail'])) ? $_POST['mail'] : ''; ?>"></td>
+            <th>性別</th>
+            <td><label for="male">男</label>
+              <input type="radio" class="text" checked="checked" name="gender" value="0" <?php echo (!empty($_POST['gender']) && $_POST['gender'] === '0') ? 'checked' : ''; ?>>
+              <label for="female">女</label>
+              <input type="radio" class="text" name="gender" value="1" <?php echo (!empty($_POST['gender']) && $_POST['gender'] === '1') ? 'checked' : ''; ?>>
+            </td>
+          </tr>
+          <tr>
+            <th>学年(M1は5年・M2は6年を選択)</th>
+            <td>
+              <select class="text" name="grade">
+                <option value="" <?php echo (empty($_POST['grade'])) ? 'selected' : ''; ?>>
+                </option>
+                <?php
                 $grades = array(
                   '1', '2', '3', '4', '5', '6'
                 );
@@ -221,47 +216,45 @@ if (isset($_POST['submit'])) {
                   echo '>' . $grade . "年" . '</option>';
                 }
                 ?>
-                            </select>
-                        </td>
-                        <th>アカウント権限</th>
-                        <td>
-                            <select class="text" name="authority">
-                                <option value="0"
-                                    <?php echo (empty($_POST['authority']) || $_POST['authority'] == '0') ? 'selected' : ''; ?>>
-                                    一般</option>
-                                <option value="1"
-                                    <?php echo (!empty($_POST['authority']) && $_POST['authority'] == '1') ? 'selected' : ''; ?>>
-                                    管理者</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <input type="submit" name="submit" value="検索">
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+              </select>
+            </td>
+            <th>アカウント権限</th>
+            <td>
+              <select class="text" name="authority">
+                <option value="0" <?php echo (empty($_POST['authority']) || $_POST['authority'] == '0') ? 'selected' : ''; ?>>
+                  一般</option>
+                <option value="1" <?php echo (!empty($_POST['authority']) && $_POST['authority'] == '1') ? 'selected' : ''; ?>>
+                  管理者</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <input type="submit" name="submit" value="検索">
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
 
-        <?php if (isset($_POST['submit'])) : ?>
+    <?php if (isset($_POST['submit'])) : ?>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>名前（姓）</th>
-                    <th>名前（名）</th>
-                    <th>メールアドレス</th>
-                    <th>性別</th>
-                    <th>学年</th>
-                    <th>アカウント権限</th>
-                    <th>削除フラグ</th>
-                    <th>登録日時</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>名前（姓）</th>
+            <th>名前（名）</th>
+            <th>メールアドレス</th>
+            <th>性別</th>
+            <th>学年</th>
+            <th>アカウント権限</th>
+            <th>削除フラグ</th>
+            <th>登録日時</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
           while ($row = $stmt->fetch()) {
             echo "<tr>";
             echo "<td>{$row['actor_id']}</td>";
@@ -300,15 +293,15 @@ if (isset($_POST['submit'])) {
             echo "</tr>";
           }
           ?>
-            </tbody>
-        </table>
-        <?php endif; ?>
-    </main>
+        </tbody>
+      </table>
+    <?php endif; ?>
+  </main>
 
 
-    <footer>
-        <p><small>&copy; 2024 volleyball</p>
-    </footer>
+  <footer>
+    <p><small>&copy; 2024 volleyball</p>
+  </footer>
 
 </body>
 

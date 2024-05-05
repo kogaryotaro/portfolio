@@ -60,7 +60,7 @@ if ($login === 1) {
     // 入力チェック
     if (empty($event_name)) {
       $errors['event_name'] = 'イベントが未入力です。';
-    } elseif (mb_strlen($event_name, 'UTF-8') > 100 || !preg_match('/^[ぁ-んァ-ン一-龠]+$/u', $event_name)) {
+    } elseif (mb_strlen($event_name, 'UTF-8') > 100 || !preg_match('/^[ぁ-んァ-ンー一-龠0-9 -]+$/u', $event_name)) {
       $errors['event_name'] = 'イベントはひらがな、漢字のみ入力可能で、最大100文字です。';
     }
 
@@ -133,61 +133,59 @@ if ($login === 1) {
 <html lang="ja">
 
 <head>
-    <meta charset="utf-8">
-    <title>イベント更新画面</title>
-    <link rel="stylesheet" type="text/css" href="./css/style.event.css">
+  <meta charset="utf-8">
+  <title>イベント更新画面</title>
+  <link rel="stylesheet" type="text/css" href="./css/style.event.css">
 </head>
 
 <body>
-    <header>
-        <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
-        <ul class="menu">
-            <li><a href="index.php?clear_session=true">イベント一覧</a></li>
-            <?php if ($login === 1) :  //幹事が操作できる  
+  <header>
+    <a href="index.php?clear_session=true"><img src="./images/logo.jpeg" alt="logo-mark"></a>
+    <ul class="menu">
+      <li><a href="index.php?clear_session=true">イベント一覧</a></li>
+      <?php if ($login === 1) :  //幹事が操作できる  
       ?>
-            <li><a href="actor.php?clear_session=true">参加者登録</a></li>
-            <li><a href="event.php?clear_session=true">イベント登録</a></li>
-            <li><a href="list.php?clear_session=true">参加者一覧</a></li>
-            <?php endif; ?>
-        </ul>
-    </header>
+        <li><a href="actor.php?clear_session=true">参加者登録</a></li>
+        <li><a href="event.php?clear_session=true">イベント登録</a></li>
+        <li><a href="list.php?clear_session=true">参加者一覧</a></li>
+      <?php endif; ?>
+    </ul>
+  </header>
 
-    <main>
-        <h1>イベント更新画面</h1>
-        <form method="post" action="event_update.php">
+  <main>
+    <h1>イベント更新画面</h1>
+    <form method="post" action="event_update.php">
 
-            <!-- idをわたす-->
-            <input type="hidden" value="<?php echo $event['event_id']; ?>" name="id">
+      <!-- idをわたす-->
+      <input type="hidden" value="<?php echo $event['event_id']; ?>" name="id">
 
-            <div>
-                <label>イベント　　</label>
-                <input type="text" class="text" size="35" name="event_name"
-                    value="<?php echo (!empty($_SESSION['event_name'])) ? $_SESSION['event_name'] : $event['event_name']; ?>">
+      <div>
+        <label>イベント　　</label>
+        <input type="text" class="text" size="35" name="event_name" value="<?php echo (!empty($_SESSION['event_name'])) ? $_SESSION['event_name'] : $event['event_name']; ?>">
 
-                <?php if (!empty($errors['event_name'])) : ?>
-                <p class='error-message'>
-                    <?php echo $errors['event_name']; ?>
-                </p>
-                <?php endif; ?>
-            </div>
+        <?php if (!empty($errors['event_name'])) : ?>
+          <p class='error-message'>
+            <?php echo $errors['event_name']; ?>
+          </p>
+        <?php endif; ?>
+      </div>
 
-            <div>
-                <label>開催地　　</label>
-                <input type="text" class="text" size="35" name="address"
-                    value="<?php echo (!empty($_SESSION['address'])) ? $_SESSION['address'] : $event['address']; ?>">
+      <div>
+        <label>開催地　　</label>
+        <input type="text" class="text" size="35" name="address" value="<?php echo (!empty($_SESSION['address'])) ? $_SESSION['address'] : $event['address']; ?>">
 
-                <?php if (!empty($errors['address'])) : ?>
-                <p class='error-message'>
-                    <?php echo $errors['address']; ?>
-                </p>
-                <?php endif; ?>
-            </div>
+        <?php if (!empty($errors['address'])) : ?>
+          <p class='error-message'>
+            <?php echo $errors['address']; ?>
+          </p>
+        <?php endif; ?>
+      </div>
 
-            <div>
-                <label>開催日(月)　</label>
-                <select class="text" name="month">
-                    <option value=""> </option>
-                    <?php
+      <div>
+        <label>開催日(月)　</label>
+        <select class="text" name="month">
+          <option value=""> </option>
+          <?php
           $months = array(
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'
           );
@@ -197,20 +195,20 @@ if ($login === 1) {
             echo '>' . $month . "月" . '</option>';
           }
           ?>
-                </select>
+        </select>
 
-                <?php if (!empty($errors['month'])) : ?>
-                <p class='error-message'>
-                    <?php echo $errors['month']; ?>
-                </p>
-                <?php endif; ?>
-            </div>
+        <?php if (!empty($errors['month'])) : ?>
+          <p class='error-message'>
+            <?php echo $errors['month']; ?>
+          </p>
+        <?php endif; ?>
+      </div>
 
-            <div>
-                <label>開催日(日)　</label>
-                <select class="text" name="date">
-                    <option value=""> </option>
-                    <?php
+      <div>
+        <label>開催日(日)　</label>
+        <select class="text" name="date">
+          <option value=""> </option>
+          <?php
           $dates = array(
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
           );
@@ -220,25 +218,25 @@ if ($login === 1) {
             echo '>' . $date . "日" . '</option>';
           }
           ?>
-                </select>
+        </select>
 
-                <?php if (!empty($errors['date'])) : ?>
-                <p class='error-message'>
-                    <?php echo $errors['date']; ?>
-                </p>
-                <?php endif; ?>
-            </div>
+        <?php if (!empty($errors['date'])) : ?>
+          <p class='error-message'>
+            <?php echo $errors['date']; ?>
+          </p>
+        <?php endif; ?>
+      </div>
 
-            <div>
-                <input type="submit" class="submit" value="確認する">
-            </div>
+      <div>
+        <input type="submit" class="submit" value="確認する">
+      </div>
 
-        </form>
-    </main>
+    </form>
+  </main>
 
-    <footer>
-        <p><small>&copy; 2024 volleyball</p>
-    </footer>
+  <footer>
+    <p><small>&copy; 2024 volleyball</p>
+  </footer>
 
 </body>
 

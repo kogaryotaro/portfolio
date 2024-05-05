@@ -9,46 +9,59 @@ $date = isset($_SESSION['date']) ? $_SESSION['date'] : '';
 
 mb_internal_encoding("utf8");
 
-try {
-  // ここで接続エラーが発生する可能性がある。
-  $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
-} catch (PDOException $e) {
-  // 接続エラーが発生した場合の処理
-  echo
-  "<!doctype HTML>
-            <html lang=\"ja\">
-            <head>
-            <meta charset=\"utf-8\">
-            <title>イベント登録完了画面</title>
-            <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
-            </head>
-            <body>
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+  try {
+    // ここで接続エラーが発生する可能性がある。
+    $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
+  } catch (PDOException $e) {
+    // 接続エラーが発生した場合の処理
+    echo
+    "<!doctype HTML>
+                <html lang=\"ja\">
+                <head>
+                <meta charset=\"utf-8\">
+                <title>イベント登録完了画面</title>
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"style2.css\">
+                </head>
+                <body>
+    
+                <header>
+                    <img src=\"./images/logo.jpeg\">
+                    <ul class=\"menu\">
+                        <li><a href=\"index.php\">イベント一覧</a></li>
+                    </ul>
+                </header>
+    
+                <h1>イベント登録完了画面</h1>
+    
+    
+                <div class='error-message'>エラーが発生したためイベント登録できませんでした</div>
+    
+    
+                <footer>
+                    <p><small>&copy; 2024 volleyball</p>
+                </footer>
+    
+            </body>
+            </html>";
+    exit();
+  }
 
-            <header>
-                <img src=\"./images/logo.jpeg\">
-                <ul class=\"menu\">
-                    <li><a href=\"index.php\">イベント一覧</a></li>
-                </ul>
-            </header>
+  $result =
+    $pdo->exec("insert into events(event_name, address, month, date, number, delete_flag)
+          values('$event_name', '$address', '$month', '$date', '0', '0')");
 
-            <h1>イベント登録完了画面</h1>
+  if ($result !== false || $pdo !== false) {
+    require_once 'sessionFunction.php';
+    sessionClear();
 
-
-            <div class='error-message'>エラーが発生したためイベント登録できませんでした</div>
-
-
-            <footer>
-                <p><small>&copy; 2024 volleyball</p>
-            </footer>
-
-        </body>
-        </html>";
-  exit();
+    header("location:event_complete.php");
+    exit;
+  } else {
+    $error = "エラーが発生したため登録できません";
+  }
 }
 
-$result =
-  $pdo->exec("insert into events(event_name, address, month, date, number, delete_flag)
-      values('$event_name', '$address', '$month', '$date', '0', '0')");
 ?>
 
 <!doctype HTML>
@@ -78,21 +91,16 @@ $result =
 
   <h1>イベント登録完了画面</h1>
 
-  <?php
-  if ($result !== false || $pdo !== false) {
-    require_once 'sessionFunction.php';
-    sessionClear();
-  ?>
 
-    <div class="complete">
-      <h2>登録完了しました</h2>
-      <form action="index.php" method="post">
-        <input type="submit" class="button2" value="TOPページに戻る">
-    </div>
+  <div class="complete">
+    <h2>登録完了しました</h2>
+    <form action="index.php" method="post">
+      <input type="submit" class="button2" value="TOPページに戻る">
+  </div>
 
   <?php
-  } else {
-    echo "<div class='error-message'>エラーが発生したため登録できません</div>";
+  if (!empty($error)) {
+    echo "<div class='error-message'>$error</div>";
   }
   ?>
 

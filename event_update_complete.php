@@ -10,13 +10,14 @@ $date = isset($_SESSION['date']) ? $_SESSION['date'] : '';
 
 mb_internal_encoding("utf8");
 
-try {
-  // ここで接続エラーが発生する可能性がある。
-  $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
-} catch (PDOException $e) {
-  // 接続エラーが発生した場合の処理
-  echo
-  "<!doctype HTML>
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+  try {
+    // ここで接続エラーが発生する可能性がある。
+    $pdo = new PDO("mysql:dbname=portfolio;host=localhost;", "root", "");
+  } catch (PDOException $e) {
+    // 接続エラーが発生した場合の処理
+    echo
+    "<!doctype HTML>
               <html lang=\"ja\">
               <head>
               <meta charset=\"utf-8\">
@@ -44,19 +45,28 @@ try {
   
           </body>
           </html>";
-  exit();
-}
+    exit();
+  }
 
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$result = $pdo->exec("UPDATE events SET 
+  $result = $pdo->exec("UPDATE events SET 
     event_name = '$event_name',
     address = '$address',
     month = '$month',
     date = '$date'
   WHERE event_id = $id");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+  if ($result !== false || $pdo !== false) {
+    require_once 'sessionFunction.php';
+    sessionClear();
+    header("location:event_update_complete.php");
+    exit;
+  } else {
+    $error = "エラーが発生したため登録できません";
+  }
+}
 ?>
 
 <!doctype HTML>
@@ -86,21 +96,16 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   <h1>イベント更新完了画面</h1>
 
-  <?php
-  if ($result !== false || $pdo !== false) {
-    require_once 'sessionFunction.php';
-    sessionClear();
-  ?>
 
-    <div class="complete">
-      <h2>更新完了しました</h2>
-      <form action="index.php?" method="post">
-        <input type="submit" class="button2" value="TOPページに戻る">
-    </div>
+  <div class="complete">
+    <h2>更新完了しました</h2>
+    <form action="index.php?" method="post">
+      <input type="submit" class="button2" value="TOPページに戻る">
+  </div>
 
   <?php
-  } else {
-    echo "<div class='error-message'>エラーが発生したため登録できません</div>";
+  if (!empty($error)) {
+    echo "<div class='error-message'>$error</div>";
   }
   ?>
 

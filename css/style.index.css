@@ -1,5 +1,14 @@
 /* Reset CSS */
-body, h1, h2, h3, p, ul, li, table, th, td {
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li,
+table,
+th,
+td {
     margin: 0;
     padding: 0;
 }
@@ -75,7 +84,8 @@ table {
     margin-bottom: 20px;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
@@ -102,17 +112,25 @@ footer {
     text-align: center;
     padding: 10px 0;
 }
+
 /* ロゴスタイル */
 
 header img {
-    width: 100%; /* 画像をロゴのサイズに合わせる */
-    height: auto; /* アスペクト比を保持しつつ画像を調整する */
+    width: 100%;
+    /* 画像をロゴのサイズに合わせる */
+    height: auto;
+    /* アスペクト比を保持しつつ画像を調整する */
     display: inline-block;
-    width: 50px; /* ロゴの幅 */
-    height: 50px; /* ロゴの高さ */
-    margin-right: 10px; /* ロゴとテキストの間隔 */
-    border-radius: 50%; /* 円形のロゴ */
-    overflow: hidden; /* ロゴが枠外にはみ出さないようにする */
+    width: 50px;
+    /* ロゴの幅 */
+    height: 50px;
+    /* ロゴの高さ */
+    margin-right: 10px;
+    /* ロゴとテキストの間隔 */
+    border-radius: 50%;
+    /* 円形のロゴ */
+    overflow: hidden;
+    /* ロゴが枠外にはみ出さないようにする */
 }
 
 /* ヘッダースタイル */
@@ -121,19 +139,24 @@ header {
     color: #fff;
     padding: 20px;
     text-align: center;
-    position: relative; /* ヘッダーを相対的に配置 */
+    position: relative;
+    /* ヘッダーを相対的に配置 */
 }
 
 .header-content {
-    display: flex; /* 要素を横並びにする */
-    justify-content: center; /* 要素を中央寄せする */
-    align-items: center; /* 要素を上下中央寄せする */
+    display: flex;
+    /* 要素を横並びにする */
+    justify-content: center;
+    /* 要素を中央寄せする */
+    align-items: center;
+    /* 要素を上下中央寄せする */
 }
 
 .menu {
     list-style-type: none;
-    margin-top: 10px;
-    padding-left: 0; /* メニューの余白を削除 */
+    margin-top: 30px;
+    padding-left: 0;
+    /* メニューの余白を削除 */
 }
 
 .menu li {
@@ -150,16 +173,95 @@ header {
     text-decoration: none;
     font-weight: bold;
     font-size: 16px;
-    transition: all 0.3s ease; /* メニューのホバーエフェクトを追加 */
+    transition: all 0.3s ease;
+    /* メニューのホバーエフェクトを追加 */
 }
 
 .menu a:hover {
-    color: #ffc107; /* ホバー時の色 */
+    color: #ffc107;
+    /* ホバー時の色 */
 }
 
 /*スライダー画像*/
 .main-image img {
-    width: 100%; /* 画像の幅を100%に設定 */
+    width: 100%;
+    /* 画像の幅を100%に設定 */
     height: 500px;
-    object-fit: cover; /* 画像を領域いっぱいに表示し、アスペクト比を保持する */
+    object-fit: cover;
+    /* 画像を領域いっぱいに表示し、アスペクト比を保持する */
+}
+
+/* ハンバーガーメニュー　*/
+.menu-icon {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 25px;
+}
+
+.menu-icon div {
+    width: 35px;
+    height: 3px;
+    background-color: white;
+    margin: 4.1px 0;
+    transition: 0.4s;
+}
+
+/* ハンバーガーメニューが開いた時のスタイル */
+.menu-icon.open .bar1 {
+    transform: rotate(-45deg) translate(-9px, 6px);
+}
+
+.menu-icon.open .bar2 {
+    opacity: 0;
+}
+
+.menu-icon.open .bar3 {
+    transform: rotate(45deg) translate(-8px, -8px);
+}
+
+@media screen and (max-width: 800px) {
+    .menu {
+        /*display: none;*/
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        background-color: #333;
+        transition: max-height 0.6s;
+        max-height: 0px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    .menu.open {
+        /* display: block; */
+        flex-direction: column;
+        /* width: 100%; */
+        /* text-align: center; */
+        /* background-color: #333; */
+        max-height: 1000px;
+        transition: max-height 0.6s;
+    }
+
+    .menu li {
+        display: block;
+        margin: 0;
+    }
+
+    .menu a {
+        display: block;
+        padding: 10px 0;
+    }
+
+    .menu-icon {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 801px) {
+    .menu {
+        display: block;
+    }
 }
